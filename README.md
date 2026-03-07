@@ -2,7 +2,7 @@
 
 An AI-powered, mobile-first IEM equalizer app that analyzes your music and generates personalized 15-band EQ settings based on your IEM model and listening preferences.
 
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss) ![Capacitor](https://img.shields.io/badge/Capacitor-6-119EFF?logo=capacitor)
+#####VIBE CODED
 
 ## Features
 
