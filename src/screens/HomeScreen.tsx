@@ -53,10 +53,10 @@ export function HomeScreen({ onAnalyze, isAnalyzing }: HomeScreenProps) {
           {/* Song input */}
           <Input
             label="Song Title or Artist"
-            placeholder="e.g. Hip-hop by Kendrick Lamar"
+            placeholder="e.g. Blinding Lights, Bohemian Rhapsody"
             value={songTitle}
             onChange={e => setSongTitle(e.target.value)}
-            hint="Genre keywords improve analysis accuracy"
+            hint="Song titles, artist names, or genre keywords all work"
             icon={
               <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
@@ -86,7 +86,7 @@ export function HomeScreen({ onAnalyze, isAnalyzing }: HomeScreenProps) {
               ) : (
                 <div>
                   <p className="text-sm text-white/40">Upload audio file (optional)</p>
-                  <p className="text-xs text-white/25 mt-0.5">Enhances genre detection</p>
+                  <p className="text-xs text-white/25 mt-0.5">Analyzes real audio spectrum for best results</p>
                 </div>
               )}
             </button>
@@ -140,8 +140,9 @@ export function HomeScreen({ onAnalyze, isAnalyzing }: HomeScreenProps) {
       <Card className="p-4">
         <p className="text-xs font-semibold text-warm-300 mb-2">💡 Tips</p>
         <ul className="text-xs text-white/40 space-y-1">
-          <li>• Include genre keywords for better analysis (e.g. "jazz piano")</li>
-          <li>• Use brand + model for IEM (e.g. "Moondrop Aria")</li>
+          <li>• Enter any song title — 100+ popular songs auto-detected</li>
+          <li>• Upload audio for real spectral analysis (bass/treble/vocals)</li>
+          <li>• 100+ IEM models recognized, or type any brand name</li>
           <li>• Save presets to revisit your EQ settings</li>
         </ul>
       </Card>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import type { AnalysisResult, VibeModeType, Preset } from '../types';
+import type { AnalysisResult, VibeModeType, Preset, EQFeedbackRating } from '../types';
 import { Card } from '../components/Card';
 import { EQChart } from '../components/EQChart';
 import { EQBandGrid } from '../components/EQBandGrid';
+import { EQFeedbackComponent } from '../components/EQFeedback';
 import { savePreset, generatePresetId } from '../utils/storage';
 
 interface ResultsScreenProps {
@@ -12,6 +13,7 @@ interface ResultsScreenProps {
   preference: string;
   vibeMode: VibeModeType;
   onBack: () => void;
+  onFeedback?: (rating: EQFeedbackRating) => void;
 }
 
 function MoodBadge({ mood }: { mood: string }) {
@@ -49,7 +51,7 @@ function ConfidencePill({ confidence }: { confidence: number }) {
   );
 }
 
-export function ResultsScreen({ result, songTitle, vibeMode, onBack }: ResultsScreenProps) {
+export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback }: ResultsScreenProps) {
   const [saved, setSaved] = useState(false);
   const [showAllBands, setShowAllBands] = useState(false);
 
@@ -91,11 +93,10 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack }: ResultsSc
           <p className="text-xs text-white/40 truncate max-w-[200px]">{songTitle}</p>
         </div>
         <div className="ml-auto">
-          <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${
-            isEnergetic
+          <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${isEnergetic
               ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
               : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-          }`}>
+            }`}>
             {isEnergetic ? '⚡ Energetic' : '🌙 Peaceful'}
           </span>
         </div>
@@ -187,16 +188,35 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack }: ResultsSc
           <div className="flex items-center gap-2">
             <span className="text-base">📊</span>
             <h3 className="text-sm font-semibold text-warm-200">15-Band EQ</h3>
+            {result.mlEnhanced && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium animate-fade-in">
+                🧠 AI Enhanced
+              </span>
+            )}
           </div>
-          <div className="text-right">
-            <span className="text-xs text-white/40">Preamp: </span>
-            <span className="text-xs font-mono text-warm-300">
-              {eq.preamp.toFixed(1)} dB
-            </span>
+          <div className="text-right flex flex-col items-end gap-0.5">
+            <div>
+              <span className="text-xs text-white/40">Preamp: </span>
+              <span className="text-xs font-mono text-warm-300">
+                {eq.preamp.toFixed(1)} dB
+              </span>
+            </div>
+            {result.mlConfidence !== undefined && (
+              <span className="text-[10px] text-purple-300/70">
+                ML Confidence: {Math.round(result.mlConfidence * 100)}%
+              </span>
+            )}
           </div>
         </div>
         <EQChart gains={eq.gains} vibeMode={vibeMode} />
       </Card>
+
+      {/* ML Feedback */}
+      {onFeedback && (
+        <Card className="p-4">
+          <EQFeedbackComponent onFeedback={onFeedback} />
+        </Card>
+      )}
 
       {/* Band values */}
       <Card className="p-4">

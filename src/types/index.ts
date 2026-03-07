@@ -103,4 +103,59 @@ export interface AnalysisResult {
   songProfile: SongProfile;
   iemProfile: IEMProfile;
   eqRecommendation: EQRecommendation;
+  mlConfidence?: number;
+  mlEnhanced?: boolean;
 }
+
+// ─── ML Types ────────────────────────────────────────────────────────────────
+
+export type EQFeedbackRating = 'perfect' | 'good' | 'needs_work' | 'bad';
+
+export interface EQFeedback {
+  id: string;
+  timestamp: string;
+  genre: Genre;
+  iemBass: number;
+  iemMid: number;
+  iemTreble: number;
+  preference: ListenerPreference;
+  energy: number;
+  bassEmphasis: number;
+  vocalPresence: number;
+  trebleEnergy: number;
+  gains: EQGains;
+  rating: EQFeedbackRating;
+}
+
+export interface MLPrediction {
+  gains: EQGains;
+  confidence: number;
+}
+
+export interface HybridRecommendation extends EQRecommendation {
+  mlConfidence: number;
+  mlEnhanced: boolean;
+  rulesGains: EQGains;
+  mlGains: EQGains;
+}
+
+// ─── Feature Encoding Maps ───────────────────────────────────────────────────
+
+export const GENRE_INDEX: Record<Genre, number> = {
+  'pop': 0, 'rock': 1, 'electronic': 2, 'jazz': 3, 'classical': 4,
+  'hip-hop': 5, 'r&b': 6, 'metal': 7, 'folk': 8, 'ambient': 9, 'unknown': 10,
+};
+
+export const PREFERENCE_INDEX: Record<ListenerPreference, number> = {
+  'balanced': 0, 'bass': 1, 'vocals': 2, 'sparkle': 3,
+};
+
+export const TUNING_INDEX: Record<TuningSignature, number> = {
+  'Harman Target': 0, 'V-Shape': 1, 'Sharp V': 2, 'Balanced V': 3,
+  'Warm Neutral': 4, 'Bright': 5, 'Dark': 6, 'U-Shape': 7,
+  'W-Shape': 8, 'Mid-Forward': 9, 'Diffuse Field': 10, 'Bass Boosted': 11,
+};
+
+export const ML_INPUT_SIZE = 20;  // 11 genre one-hot + 3 IEM levels + 1 preference + 4 song features + 1 tuning
+export const ML_HIDDEN_SIZE = 32;
+export const ML_OUTPUT_SIZE = 15; // 15 EQ bands

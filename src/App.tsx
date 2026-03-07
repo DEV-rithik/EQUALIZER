@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import type { AnalysisInput, AnalysisResult, VibeModeType, Preset } from './types';
-import { analyzeSong } from './engine/songAnalysis';
+import React, { useState, useCallback, useEffect } from 'react';
+import type { AnalysisInput, AnalysisResult, VibeModeType, Preset, EQFeedbackRating } from './types';
+import { analyzeSongWithAudio } from './engine/songAnalysis';
 import { matchIEM } from './data/iemDatabase';
-import { recommendEQ } from './engine/eqEngine';
+import { hybridRecommendEQ, submitFeedback, initializeMLModel } from './engine/mlRecommender';
 import { HomeScreen } from './screens/HomeScreen';
 import { ResultsScreen } from './screens/ResultsScreen';
 import { PresetsScreen } from './screens/PresetsScreen';
@@ -22,6 +22,11 @@ export default function App() {
 
   const vibeMode = useVibe(analysisResult);
 
+  // Initialize ML model on mount
+  useEffect(() => {
+    initializeMLModel();
+  }, []);
+
   const handleAnalyze = useCallback(async (input: AnalysisInput) => {
     setIsAnalyzing(true);
     setLastInput(input);
@@ -29,14 +34,31 @@ export default function App() {
     // Simulate slight async delay for UX effect
     await new Promise(r => setTimeout(r, 800));
 
-    const songProfile = analyzeSong(input.songTitle);
+    const songProfile = await analyzeSongWithAudio(input.songTitle, input.audioFile);
     const iemProfile = matchIEM(input.iemModel);
-    const eqRecommendation = recommendEQ(songProfile, iemProfile, input.preference);
+    const eqRecommendation = hybridRecommendEQ(songProfile, iemProfile, input.preference);
 
-    setAnalysisResult({ songProfile, iemProfile, eqRecommendation });
+    setAnalysisResult({
+      songProfile,
+      iemProfile,
+      eqRecommendation,
+      mlConfidence: eqRecommendation.mlConfidence,
+      mlEnhanced: eqRecommendation.mlEnhanced,
+    });
     setIsAnalyzing(false);
     setScreen('results');
   }, []);
+
+  const handleFeedback = useCallback((rating: EQFeedbackRating) => {
+    if (!analysisResult || !lastInput) return;
+    submitFeedback(
+      analysisResult.songProfile,
+      analysisResult.iemProfile,
+      lastInput.preference,
+      analysisResult.eqRecommendation.gains,
+      rating,
+    );
+  }, [analysisResult, lastInput]);
 
   function handleLoadPreset(preset: Preset) {
     setAnalysisResult({
@@ -78,21 +100,19 @@ export default function App() {
             <div className="flex gap-1 bg-white/5 rounded-2xl p-1 border border-white/8">
               <button
                 onClick={() => setScreen('home')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  screen === 'home'
-                    ? 'bg-warm-500/30 text-warm-200 shadow-sm'
-                    : 'text-white/40 hover:text-white/60'
-                }`}
+                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'home'
+                  ? 'bg-warm-500/30 text-warm-200 shadow-sm'
+                  : 'text-white/40 hover:text-white/60'
+                  }`}
               >
                 🎵 Analyze
               </button>
               <button
                 onClick={() => setScreen('presets')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${
-                  screen === 'presets'
-                    ? 'bg-warm-500/30 text-warm-200 shadow-sm'
-                    : 'text-white/40 hover:text-white/60'
-                }`}
+                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'presets'
+                  ? 'bg-warm-500/30 text-warm-200 shadow-sm'
+                  : 'text-white/40 hover:text-white/60'
+                  }`}
               >
                 📂 Presets
               </button>
@@ -113,6 +133,7 @@ export default function App() {
               preference={lastInput?.preference ?? 'balanced'}
               vibeMode={vibeMode}
               onBack={handleBack}
+              onFeedback={handleFeedback}
             />
           )}
           {screen === 'presets' && (
