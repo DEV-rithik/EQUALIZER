@@ -1,13 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import type { AnalysisInput, AnalysisResult, VibeModeType, Preset, EQFeedbackRating } from './types';
+import type { AnalysisInput, AnalysisResult, VibeModeType, Preset, EQFeedbackRating, IEMProfile } from './types';
 import { analyzeSongWithAudio } from './engine/songAnalysis';
-import { matchIEM } from './data/iemDatabase';
+import { analyzeFromiTunes } from './services/iTunesService';
 import { hybridRecommendEQ, submitFeedback, initializeMLModel } from './engine/mlRecommender';
+import { loadUserIEM, saveUserIEM, hasUserIEM } from './utils/storage';
 import { HomeScreen } from './screens/HomeScreen';
 import { ResultsScreen } from './screens/ResultsScreen';
 import { PresetsScreen } from './screens/PresetsScreen';
+import { IEMSetupScreen } from './screens/IEMSetupScreen';
+import { InsightsScreen } from './screens/InsightsScreen';
 
-type Screen = 'home' | 'results' | 'presets';
+type Screen = 'home' | 'results' | 'presets' | 'iem-setup' | 'insights';
 
 function useVibe(result: AnalysisResult | null): VibeModeType {
   if (!result) return 'peaceful';
@@ -15,10 +18,12 @@ function useVibe(result: AnalysisResult | null): VibeModeType {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('home');
+  // Show IEM setup on first launch, otherwise home
+  const [screen, setScreen] = useState<Screen>(() => hasUserIEM() ? 'home' : 'iem-setup');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [lastInput, setLastInput] = useState<AnalysisInput | null>(null);
+  const [userIEM, setUserIEM] = useState<IEMProfile | null>(() => loadUserIEM());
 
   const vibeMode = useVibe(analysisResult);
 
@@ -27,15 +32,33 @@ export default function App() {
     initializeMLModel();
   }, []);
 
+  function handleSaveIEM(profile: IEMProfile) {
+    saveUserIEM(profile);
+    setUserIEM(profile);
+    setScreen('home');
+  }
+
   const handleAnalyze = useCallback(async (input: AnalysisInput) => {
+    if (!userIEM) {
+      setScreen('iem-setup');
+      return;
+    }
+
     setIsAnalyzing(true);
     setLastInput(input);
 
-    // Simulate slight async delay for UX effect
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise(r => setTimeout(r, 400));
 
-    const songProfile = await analyzeSongWithAudio(input.songTitle, input.audioFile);
-    const iemProfile = matchIEM(input.iemModel);
+    // Use iTunes analysis if a track was selected, otherwise fall back to heuristic
+    let songProfile;
+    if (input.iTunesTrack) {
+      songProfile = await analyzeFromiTunes(input.iTunesTrack);
+    } else {
+      songProfile = await analyzeSongWithAudio(input.songTitle, input.audioFile);
+    }
+
+    // Always use the saved user IEM profile
+    const iemProfile = userIEM;
     const eqRecommendation = hybridRecommendEQ(songProfile, iemProfile, input.preference);
 
     setAnalysisResult({
@@ -47,10 +70,10 @@ export default function App() {
     });
     setIsAnalyzing(false);
     setScreen('results');
-  }, []);
+  }, [userIEM]);
 
   const handleFeedback = useCallback((rating: EQFeedbackRating) => {
-    if (!analysisResult || !lastInput) return;
+    if (!analysisResult || !lastInput || !userIEM) return;
     submitFeedback(
       analysisResult.songProfile,
       analysisResult.iemProfile,
@@ -58,7 +81,7 @@ export default function App() {
       analysisResult.eqRecommendation.gains,
       rating,
     );
-  }, [analysisResult, lastInput]);
+  }, [analysisResult, lastInput, userIEM]);
 
   function handleLoadPreset(preset: Preset) {
     setAnalysisResult({
@@ -83,6 +106,8 @@ export default function App() {
     ? 'bg-gradient-to-br from-[#1a0f06] via-[#1f1008] to-[#0f0e17]'
     : 'bg-gradient-to-br from-[#0f0e17] via-[#1a1828] to-[#0d0c1a]';
 
+  const mainTabs: Screen[] = ['home', 'presets', 'insights'];
+
   return (
     <div className={`min-h-screen min-h-dvh transition-colors duration-1000 ${bgClass}`}>
       {/* Ambient glow */}
@@ -95,7 +120,7 @@ export default function App() {
       {/* Content */}
       <div className="relative max-w-md mx-auto px-4 pt-safe-top pb-safe-bottom">
         {/* Navigation tabs */}
-        {screen !== 'results' && (
+        {screen !== 'results' && screen !== 'iem-setup' && (
           <div className="sticky top-0 z-10 pt-4 pb-2 backdrop-blur-md">
             <div className="flex gap-1 bg-white/5 rounded-2xl p-1 border border-white/8">
               <button
@@ -116,14 +141,34 @@ export default function App() {
               >
                 📂 Presets
               </button>
+              <button
+                onClick={() => setScreen('insights')}
+                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'insights'
+                  ? 'bg-purple-500/30 text-purple-200 shadow-sm'
+                  : 'text-white/40 hover:text-white/60'
+                  }`}
+              >
+                🧠 Insights
+              </button>
             </div>
           </div>
         )}
 
         {/* Screens */}
         <div className="py-4">
+          {screen === 'iem-setup' && (
+            <IEMSetupScreen
+              onSave={handleSaveIEM}
+              existingProfile={userIEM}
+            />
+          )}
           {screen === 'home' && (
-            <HomeScreen onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+            <HomeScreen
+              onAnalyze={handleAnalyze}
+              isAnalyzing={isAnalyzing}
+              userIEM={userIEM}
+              onEditIEM={() => setScreen('iem-setup')}
+            />
           )}
           {screen === 'results' && analysisResult && (
             <ResultsScreen
@@ -138,6 +183,9 @@ export default function App() {
           )}
           {screen === 'presets' && (
             <PresetsScreen onLoad={handleLoadPreset} />
+          )}
+          {screen === 'insights' && (
+            <InsightsScreen />
           )}
         </div>
       </div>

@@ -1,8 +1,9 @@
-import type { Preset, EQFeedback } from '../types';
+import type { Preset, EQFeedback, IEMProfile } from '../types';
 
 const STORAGE_KEY = 'equalizer_presets';
 const FEEDBACK_KEY = 'equalizer_feedback';
 const ML_WEIGHTS_KEY = 'equalizer_ml_weights';
+const USER_IEM_KEY = 'equalizer_user_iem';
 
 export function loadPresets(): Preset[] {
   try {
@@ -77,5 +78,37 @@ export function loadMLWeights(): unknown | null {
   } catch {
     return null;
   }
+}
+
+// ─── User IEM Profile Persistence ────────────────────────────────────────────
+
+export function saveUserIEM(profile: IEMProfile): void {
+  try {
+    localStorage.setItem(USER_IEM_KEY, JSON.stringify(profile));
+  } catch {
+    console.warn('[IEM] Could not save user IEM profile');
+  }
+}
+
+export function loadUserIEM(): IEMProfile | null {
+  try {
+    const raw = localStorage.getItem(USER_IEM_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as IEMProfile;
+  } catch {
+    return null;
+  }
+}
+
+export function hasUserIEM(): boolean {
+  return localStorage.getItem(USER_IEM_KEY) !== null;
+}
+
+// ─── ML Data Reset ───────────────────────────────────────────────────────────
+
+export function clearMLData(): void {
+  localStorage.removeItem(FEEDBACK_KEY);
+  localStorage.removeItem(ML_WEIGHTS_KEY);
+  console.log('[ML] All feedback and model weights cleared');
 }
 

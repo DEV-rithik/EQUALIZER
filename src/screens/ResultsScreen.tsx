@@ -94,8 +94,8 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback 
         </div>
         <div className="ml-auto">
           <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${isEnergetic
-              ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
-              : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+            ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+            : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
             }`}>
             {isEnergetic ? '⚡ Energetic' : '🌙 Peaceful'}
           </span>
@@ -105,8 +105,19 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback 
       {/* Song profile */}
       <Card className="p-4" glowing={isEnergetic}>
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-base">🎵</span>
-          <h3 className="text-sm font-semibold text-warm-200">Song Profile</h3>
+          {song.albumArt ? (
+            <img src={song.albumArt} alt="" className="w-10 h-10 rounded-lg shadow-lg" />
+          ) : (
+            <span className="text-base">🎵</span>
+          )}
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-warm-200">Song Profile</h3>
+          </div>
+          {song.source === 'itunes' && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-500/30 font-medium">
+              🍎 iTunes
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2 mb-3">
           <span className="text-xs font-medium text-white/70 capitalize">{song.genre}</span>

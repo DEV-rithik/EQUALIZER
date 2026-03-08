@@ -25,6 +25,8 @@ export interface SongProfile {
   vocalPresence: number;   // 0–1
   trebleEnergy: number;    // 0–1
   rhythmIntensity: number; // 0–1
+  albumArt?: string;       // album artwork URL (from iTunes)
+  source?: 'local' | 'itunes'; // where the data came from
 }
 
 export type VibeModeType = 'energetic' | 'peaceful';
@@ -95,6 +97,7 @@ export interface AnalysisInput {
   iemModel: string;
   preference: ListenerPreference;
   audioFile?: File;
+  iTunesTrack?: import('../services/iTunesService').iTunesTrack;
 }
 
 // ─── Analysis Result ─────────────────────────────────────────────────────────
