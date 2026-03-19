@@ -1,5 +1,5 @@
-// ─── Lightweight Neural Network for EQ Prediction ────────────────────────────
-// 2-layer fully-connected network: input(20) → hidden(32) → output(15)
+// ─── Lightweight Neural Network for EQ Prediction (10-Band) ──────────────────
+// 2-layer fully-connected network: input(20) → hidden(32) → output(10)
 // Runs entirely in the browser. Supports online learning from user feedback.
 
 import type { SongProfile, IEMProfile, ListenerPreference, EQGains, MLPrediction } from '../types';
@@ -125,14 +125,14 @@ function forward(input: number[], weights: ModelWeights): { hidden: number[]; ou
         hidden[j] = relu(sum);
     }
 
-    // Output layer: hidden(32) × w2(32×15) + b2(15)
+    // Output layer: hidden(32) × w2(32×10) + b2(10)
     const output: number[] = new Array(ML_OUTPUT_SIZE).fill(0);
     for (let j = 0; j < ML_OUTPUT_SIZE; j++) {
         let sum = weights.b2[j];
         for (let i = 0; i < ML_HIDDEN_SIZE; i++) {
             sum += hidden[i] * weights.w2[i * ML_OUTPUT_SIZE + j];
         }
-        output[j] = clamp(sum, -6, 6);
+        output[j] = clamp(sum, -10, 10);
     }
 
     return { hidden, output };
@@ -214,7 +214,7 @@ class EQNeuralNetwork {
 
     /** Train the model on the curated dataset */
     private train(): void {
-        console.log('[ML] Training model on curated dataset...');
+        console.log('[ML] Training 10-band model on curated dataset...');
         const epochs = 200;
         let lr = 0.005;
         let lastLoss = Infinity;
@@ -247,10 +247,10 @@ class EQNeuralNetwork {
         const features = encodeFeatures(song, iem, preference);
         const { output } = forward(features, this.weights);
 
-        // Convert output array to EQGains
+        // Convert output array to EQGains (10 bands)
         const gains = {} as EQGains;
         for (let i = 0; i < EQ_BANDS.length; i++) {
-            gains[EQ_BANDS[i]] = Math.round(clamp(output[i], -6, 6) * 10) / 10;
+            gains[EQ_BANDS[i]] = Math.round(clamp(output[i], -10, 10) * 10) / 10;
         }
 
         // Confidence based on training data proximity and feedback count
@@ -267,7 +267,7 @@ class EQNeuralNetwork {
         iem: IEMProfile,
         preference: ListenerPreference,
         actualGains: EQGains,
-        ratingMultiplier: number, // positive for good, negative for bad
+        ratingMultiplier: number,
     ): void {
         const features = encodeFeatures(song, iem, preference);
         const { hidden, output } = forward(features, this.weights);

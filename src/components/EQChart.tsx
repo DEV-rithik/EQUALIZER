@@ -51,8 +51,8 @@ export function EQChart({ gains, vibeMode = 'peaceful' }: EQChartProps) {
             tickLine={false}
           />
           <YAxis
-            domain={[-6, 6]}
-            ticks={[-6, -4, -2, 0, 2, 4, 6]}
+            domain={[-10, 10]}
+            ticks={[-10, -5, 0, 5, 10]}
             tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 9 }}
             axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
             tickLine={false}

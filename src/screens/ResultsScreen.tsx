@@ -14,6 +14,7 @@ interface ResultsScreenProps {
   vibeMode: VibeModeType;
   onBack: () => void;
   onFeedback?: (rating: EQFeedbackRating) => void;
+  onApplySystemEQ?: () => void;
 }
 
 function MoodBadge({ mood }: { mood: string }) {
@@ -51,9 +52,10 @@ function ConfidencePill({ confidence }: { confidence: number }) {
   );
 }
 
-export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback }: ResultsScreenProps) {
+export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback, onApplySystemEQ }: ResultsScreenProps) {
   const [saved, setSaved] = useState(false);
   const [showAllBands, setShowAllBands] = useState(false);
+  const [eqApplied, setEqApplied] = useState(false);
 
   const { songProfile: song, iemProfile: iem, eqRecommendation: eq } = result;
 
@@ -198,7 +200,7 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback 
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-base">📊</span>
-            <h3 className="text-sm font-semibold text-warm-200">15-Band EQ</h3>
+            <h3 className="text-sm font-semibold text-warm-200">10-Band EQ</h3>
             {result.mlEnhanced && (
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium animate-fade-in">
                 🧠 AI Enhanced
@@ -248,7 +250,7 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback 
                 key={band}
                 className="flex-1 rounded-t-sm transition-all duration-500"
                 style={{
-                  height: `${((gain + 6) / 12) * 100}%`,
+                  height: `${((gain + 10) / 20) * 100}%`,
                   minHeight: '3px',
                   background: gain >= 0 ? 'rgba(212,131,42,0.7)' : 'rgba(96,165,250,0.7)',
                 }}
@@ -295,6 +297,31 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback 
           ↩ New Analysis
         </button>
       </div>
+
+      {/* Apply to System EQ */}
+      {onApplySystemEQ && (
+        <div className="pb-4">
+          <button
+            onClick={() => {
+              onApplySystemEQ();
+              setEqApplied(true);
+              setTimeout(() => setEqApplied(false), 3000);
+            }}
+            className={`
+              w-full py-4 rounded-2xl text-sm font-bold transition-all duration-300
+              ${eqApplied
+                ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                : 'bg-gradient-to-r from-warm-500/30 to-orange-500/30 text-warm-200 border border-warm-500/30 hover:from-warm-500/40 hover:to-orange-500/40'
+              }
+            `}
+          >
+            {eqApplied ? '✓ Applied to System EQ!' : '🔊 Apply to System EQ'}
+          </button>
+          <p className="text-[10px] text-white/30 text-center mt-1.5">
+            Applies this EQ to all audio playing on your device
+          </p>
+        </div>
+      )}
     </div>
   );
 }

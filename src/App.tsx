@@ -1,16 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import type { AnalysisInput, AnalysisResult, VibeModeType, Preset, EQFeedbackRating, IEMProfile } from './types';
+import type { AnalysisInput, AnalysisResult, VibeModeType, Preset, EQFeedbackRating, IEMProfile, EQRecommendation } from './types';
 import { analyzeSongWithAudio } from './engine/songAnalysis';
 import { analyzeFromiTunes } from './services/iTunesService';
 import { hybridRecommendEQ, submitFeedback, initializeMLModel } from './engine/mlRecommender';
 import { loadUserIEM, saveUserIEM, hasUserIEM } from './utils/storage';
+import { applySystemEQ, initializeSystemEQ } from './services/systemEQPlugin';
 import { HomeScreen } from './screens/HomeScreen';
 import { ResultsScreen } from './screens/ResultsScreen';
 import { PresetsScreen } from './screens/PresetsScreen';
 import { IEMSetupScreen } from './screens/IEMSetupScreen';
 import { InsightsScreen } from './screens/InsightsScreen';
+import { LiveEQScreen } from './screens/LiveEQScreen';
 
-type Screen = 'home' | 'results' | 'presets' | 'iem-setup' | 'insights';
+type Screen = 'home' | 'results' | 'presets' | 'iem-setup' | 'insights' | 'live-eq';
 
 function useVibe(result: AnalysisResult | null): VibeModeType {
   if (!result) return 'peaceful';
@@ -24,6 +26,7 @@ export default function App() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [lastInput, setLastInput] = useState<AnalysisInput | null>(null);
   const [userIEM, setUserIEM] = useState<IEMProfile | null>(() => loadUserIEM());
+  const [lastEQRecommendation, setLastEQRecommendation] = useState<EQRecommendation | null>(null);
 
   const vibeMode = useVibe(analysisResult);
 
@@ -68,6 +71,7 @@ export default function App() {
       mlConfidence: eqRecommendation.mlConfidence,
       mlEnhanced: eqRecommendation.mlEnhanced,
     });
+    setLastEQRecommendation(eqRecommendation);
     setIsAnalyzing(false);
     setScreen('results');
   }, [userIEM]);
@@ -83,6 +87,19 @@ export default function App() {
     );
   }, [analysisResult, lastInput, userIEM]);
 
+  const handleApplySystemEQ = useCallback(async () => {
+    if (!analysisResult) return;
+    try {
+      // Ensure system EQ is initialized
+      await initializeSystemEQ();
+      // Apply the current gains
+      await applySystemEQ(analysisResult.eqRecommendation.gains);
+      console.log('[App] Applied EQ to system audio');
+    } catch (err) {
+      console.error('[App] Failed to apply system EQ:', err);
+    }
+  }, [analysisResult]);
+
   function handleLoadPreset(preset: Preset) {
     setAnalysisResult({
       songProfile: preset.songProfile,
@@ -94,6 +111,7 @@ export default function App() {
       iemModel: preset.iemModel,
       preference: preset.preference,
     });
+    setLastEQRecommendation(preset.eqRecommendation);
     setScreen('results');
   }
 
@@ -105,8 +123,6 @@ export default function App() {
   const bgClass = vibeMode === 'energetic'
     ? 'bg-gradient-to-br from-[#1a0f06] via-[#1f1008] to-[#0f0e17]'
     : 'bg-gradient-to-br from-[#0f0e17] via-[#1a1828] to-[#0d0c1a]';
-
-  const mainTabs: Screen[] = ['home', 'presets', 'insights'];
 
   return (
     <div className={`min-h-screen min-h-dvh transition-colors duration-1000 ${bgClass}`}>
@@ -131,6 +147,15 @@ export default function App() {
                   }`}
               >
                 🎵 Analyze
+              </button>
+              <button
+                onClick={() => setScreen('live-eq')}
+                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'live-eq'
+                  ? 'bg-green-500/30 text-green-200 shadow-sm'
+                  : 'text-white/40 hover:text-white/60'
+                  }`}
+              >
+                🎧 Live EQ
               </button>
               <button
                 onClick={() => setScreen('presets')}
@@ -179,6 +204,14 @@ export default function App() {
               vibeMode={vibeMode}
               onBack={handleBack}
               onFeedback={handleFeedback}
+              onApplySystemEQ={handleApplySystemEQ}
+            />
+          )}
+          {screen === 'live-eq' && (
+            <LiveEQScreen
+              lastAppliedEQ={lastEQRecommendation}
+              songTitle={lastInput?.songTitle}
+              iemModel={lastInput?.iemModel}
             />
           )}
           {screen === 'presets' && (

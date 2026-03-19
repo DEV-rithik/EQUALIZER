@@ -59,8 +59,8 @@ export function hybridRecommendEQ(
         const mlGain = mlPrediction.gains[band];
         blendedGains[band] = clamp(
             Math.round((alpha * mlGain + (1 - alpha) * rulesGain) * 10) / 10,
-            -6,
-            6,
+            -10,
+            10,
         );
     }
 

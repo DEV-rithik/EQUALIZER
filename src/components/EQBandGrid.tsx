@@ -24,7 +24,7 @@ export function EQBandGrid({ gains }: EQBandGridProps) {
     <div className="grid grid-cols-5 gap-1.5">
       {EQ_BANDS.map(band => {
         const gain = gains[band];
-        const pct = ((gain + 6) / 12) * 100; // 0-100% mapped from -6..+6
+        const pct = ((gain + 10) / 20) * 100; // 0-100% mapped from -10..+10
         return (
           <div key={band} className="flex flex-col items-center gap-1">
             {/* Mini bar */}
@@ -38,7 +38,7 @@ export function EQBandGrid({ gains }: EQBandGridProps) {
                   ${gain >= 0 ? 'bg-warm-400' : 'bg-blue-400'}
                 `}
                 style={{
-                  height: `${Math.abs(gain) / 6 * 48}%`,
+                  height: `${Math.abs(gain) / 10 * 48}%`,
                   bottom: gain >= 0 ? '50%' : 'auto',
                   top: gain < 0 ? '50%' : 'auto',
                 }}

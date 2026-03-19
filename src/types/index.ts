@@ -59,9 +59,10 @@ export interface IEMProfile {
   confidence: number;      // 0–1 match confidence
 }
 
-// ─── EQ ──────────────────────────────────────────────────────────────────────
+// ─── EQ (10-Band) ────────────────────────────────────────────────────────────
+// Standard 10-band frequencies matching most Android hardware EQs
 
-export const EQ_BANDS = [25, 40, 63, 100, 160, 250, 400, 630, 1000, 1600, 2500, 4000, 6300, 10000, 16000] as const;
+export const EQ_BANDS = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000] as const;
 export type EQBand = typeof EQ_BANDS[number];
 
 export type EQGains = Record<EQBand, number>;
@@ -161,4 +162,4 @@ export const TUNING_INDEX: Record<TuningSignature, number> = {
 
 export const ML_INPUT_SIZE = 20;  // 11 genre one-hot + 3 IEM levels + 1 preference + 4 song features + 1 tuning
 export const ML_HIDDEN_SIZE = 32;
-export const ML_OUTPUT_SIZE = 15; // 15 EQ bands
+export const ML_OUTPUT_SIZE = 10; // 10 EQ bands
