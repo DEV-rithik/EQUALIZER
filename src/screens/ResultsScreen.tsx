@@ -18,24 +18,16 @@ interface ResultsScreenProps {
 }
 
 function MoodBadge({ mood }: { mood: string }) {
-  const colors: Record<string, string> = {
-    energetic: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
-    peaceful: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-    intense: 'bg-red-500/20 text-red-300 border-red-500/30',
-    melancholic: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-    uplifting: 'bg-green-500/20 text-green-300 border-green-500/30',
-    relaxed: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-  };
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full border capitalize ${colors[mood] ?? 'bg-white/10 text-white/60 border-white/20'}`}>
+    <span className="text-xs px-2.5 py-0.5 rounded-full border capitalize bg-amber-900/20 text-amber-300 border-amber-900/30">
       {mood}
     </span>
   );
 }
 
-function ProgressBar({ value, color = 'bg-warm-400' }: { value: number; color?: string }) {
+function ProgressBar({ value, color = 'bg-amber-500' }: { value: number; color?: string }) {
   return (
-    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+    <div className="h-1.5 bg-[#292524] rounded-full overflow-hidden">
       <div
         className={`h-full rounded-full transition-all duration-700 ${color}`}
         style={{ width: `${Math.round(value * 100)}%` }}
@@ -46,7 +38,7 @@ function ProgressBar({ value, color = 'bg-warm-400' }: { value: number; color?: 
 
 function ConfidencePill({ confidence }: { confidence: number }) {
   const pct = Math.round(confidence * 100);
-  const color = pct > 70 ? 'text-green-400' : pct > 40 ? 'text-yellow-400' : 'text-red-400';
+  const color = pct > 70 ? 'text-amber-400' : pct > 40 ? 'text-amber-500/70' : 'text-stone-500';
   return (
     <span className={`text-xs font-semibold ${color}`}>{pct}% match</span>
   );
@@ -58,8 +50,6 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
   const [eqApplied, setEqApplied] = useState(false);
 
   const { songProfile: song, iemProfile: iem, eqRecommendation: eq } = result;
-
-  const isEnergetic = vibeMode === 'energetic';
 
   function handleSave() {
     const preset: Preset = {
@@ -79,33 +69,25 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
   }
 
   return (
-    <div className={`flex flex-col gap-4 animate-slide-up transition-colors duration-700`}>
+    <div className="flex flex-col gap-5 animate-slide-up">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}
-          className="w-9 h-9 rounded-xl bg-white/8 border border-white/10 flex items-center justify-center hover:bg-white/15 transition-colors"
+          className="w-9 h-9 rounded-xl bg-[#292524] border border-white/[0.06] flex items-center justify-center hover:bg-[#44403c] transition-colors"
         >
-          <svg className="w-4 h-4 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-4 h-4 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <div>
-          <h2 className="text-base font-bold text-white">EQ Results</h2>
-          <p className="text-xs text-white/40 truncate max-w-[200px]">{songTitle}</p>
-        </div>
-        <div className="ml-auto">
-          <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${isEnergetic
-            ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
-            : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-            }`}>
-            {isEnergetic ? '⚡ Energetic' : '🌙 Peaceful'}
-          </span>
+          <h2 className="text-base font-bold text-stone-100">EQ Results</h2>
+          <p className="text-xs text-stone-500 truncate max-w-[200px]">{songTitle}</p>
         </div>
       </div>
 
       {/* Song profile */}
-      <Card className="p-4" glowing={isEnergetic}>
+      <Card className="p-5" glowing>
         <div className="flex items-center gap-2 mb-3">
           {song.albumArt ? (
             <img src={song.albumArt} alt="" className="w-10 h-10 rounded-lg shadow-lg" />
@@ -113,7 +95,7 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
             <span className="text-base">🎵</span>
           )}
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-warm-200">Song Profile</h3>
+            <h3 className="text-sm font-semibold text-amber-400">Song Profile</h3>
           </div>
           {song.source === 'itunes' && (
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-500/30 font-medium">
@@ -122,75 +104,75 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
           )}
         </div>
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs font-medium text-white/70 capitalize">{song.genre}</span>
+          <span className="text-xs font-medium text-stone-300 capitalize">{song.genre}</span>
           <MoodBadge mood={song.mood} />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-white/40">Energy</span>
-              <span className="text-white/70">{Math.round(song.energy * 100)}%</span>
+              <span className="text-stone-500">Energy</span>
+              <span className="text-stone-300">{Math.round(song.energy * 100)}%</span>
             </div>
-            <ProgressBar value={song.energy} color={isEnergetic ? 'bg-orange-400' : 'bg-blue-400'} />
+            <ProgressBar value={song.energy} />
           </div>
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-white/40">Bass</span>
-              <span className="text-white/70">{Math.round(song.bassEmphasis * 100)}%</span>
+              <span className="text-stone-500">Bass</span>
+              <span className="text-stone-300">{Math.round(song.bassEmphasis * 100)}%</span>
             </div>
-            <ProgressBar value={song.bassEmphasis} color="bg-warm-400" />
+            <ProgressBar value={song.bassEmphasis} color="bg-amber-600" />
           </div>
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-white/40">Vocals</span>
-              <span className="text-white/70">{Math.round(song.vocalPresence * 100)}%</span>
+              <span className="text-stone-500">Vocals</span>
+              <span className="text-stone-300">{Math.round(song.vocalPresence * 100)}%</span>
             </div>
-            <ProgressBar value={song.vocalPresence} color="bg-purple-400" />
+            <ProgressBar value={song.vocalPresence} color="bg-amber-400" />
           </div>
           <div>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-white/40">Treble</span>
-              <span className="text-white/70">{Math.round(song.trebleEnergy * 100)}%</span>
+              <span className="text-stone-500">Treble</span>
+              <span className="text-stone-300">{Math.round(song.trebleEnergy * 100)}%</span>
             </div>
-            <ProgressBar value={song.trebleEnergy} color="bg-cyan-400" />
+            <ProgressBar value={song.trebleEnergy} color="bg-amber-300" />
           </div>
         </div>
-        <div className="mt-2 pt-2 border-t border-white/8 flex items-center gap-4">
-          <span className="text-xs text-white/40">Est. BPM: <span className="text-white/70">{song.bpmEstimate}</span></span>
-          <span className="text-xs text-white/40">Rhythm: <span className="text-white/70">{Math.round(song.rhythmIntensity * 100)}%</span></span>
+        <div className="mt-2 pt-2 border-t border-white/[0.06] flex items-center gap-4">
+          <span className="text-xs text-stone-500">Est. BPM: <span className="text-stone-300">{song.bpmEstimate}</span></span>
+          <span className="text-xs text-stone-500">Rhythm: <span className="text-stone-300">{Math.round(song.rhythmIntensity * 100)}%</span></span>
         </div>
       </Card>
 
       {/* IEM profile */}
-      <Card className="p-4">
+      <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-base">🎧</span>
-          <h3 className="text-sm font-semibold text-warm-200">IEM Profile</h3>
+          <h3 className="text-sm font-semibold text-amber-400">IEM Profile</h3>
           <ConfidencePill confidence={iem.confidence} />
         </div>
         <div className="mb-2">
-          <p className="text-sm font-bold text-white">{iem.brand} {iem.model}</p>
-          <p className="text-xs text-warm-300/80 mt-0.5">{iem.tuningSignature}</p>
+          <p className="text-sm font-bold text-stone-100">{iem.brand} {iem.model}</p>
+          <p className="text-xs text-amber-500/70 mt-0.5">{iem.tuningSignature}</p>
         </div>
         <div className="flex flex-wrap gap-1.5 mb-3">
           {iem.tonalNotes.map((note, i) => (
-            <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-white/8 text-white/50 border border-white/10">
+            <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-[#292524] text-stone-400 border border-white/[0.06]">
               {note}
             </span>
           ))}
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="text-center">
-            <ProgressBar value={iem.bassLevel} color="bg-warm-400" />
-            <p className="text-[10px] text-white/40 mt-1">Bass</p>
+            <ProgressBar value={iem.bassLevel} color="bg-amber-500" />
+            <p className="text-[10px] text-stone-500 mt-1">Bass</p>
           </div>
           <div className="text-center">
-            <ProgressBar value={iem.midLevel} color="bg-green-400" />
-            <p className="text-[10px] text-white/40 mt-1">Mids</p>
+            <ProgressBar value={iem.midLevel} color="bg-amber-400" />
+            <p className="text-[10px] text-stone-500 mt-1">Mids</p>
           </div>
           <div className="text-center">
-            <ProgressBar value={iem.trebleLevel} color="bg-cyan-400" />
-            <p className="text-[10px] text-white/40 mt-1">Treble</p>
+            <ProgressBar value={iem.trebleLevel} color="bg-amber-300" />
+            <p className="text-[10px] text-stone-500 mt-1">Treble</p>
           </div>
         </div>
       </Card>
@@ -200,22 +182,22 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-base">📊</span>
-            <h3 className="text-sm font-semibold text-warm-200">10-Band EQ</h3>
+            <h3 className="text-sm font-semibold text-amber-400">10-Band EQ</h3>
             {result.mlEnhanced && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium animate-fade-in">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-900/20 text-amber-300 border border-amber-900/30 font-medium animate-fade-in">
                 🧠 AI Enhanced
               </span>
             )}
           </div>
           <div className="text-right flex flex-col items-end gap-0.5">
             <div>
-              <span className="text-xs text-white/40">Preamp: </span>
-              <span className="text-xs font-mono text-warm-300">
+              <span className="text-xs text-stone-500">Preamp: </span>
+              <span className="text-xs font-mono text-amber-400">
                 {eq.preamp.toFixed(1)} dB
               </span>
             </div>
             {result.mlConfidence !== undefined && (
-              <span className="text-[10px] text-purple-300/70">
+              <span className="text-[10px] text-amber-500/60">
                 ML Confidence: {Math.round(result.mlConfidence * 100)}%
               </span>
             )}
@@ -234,10 +216,10 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
       {/* Band values */}
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-warm-200">Band Values</h3>
+          <h3 className="text-sm font-semibold text-amber-400">Band Values</h3>
           <button
             onClick={() => setShowAllBands(!showAllBands)}
-            className="text-xs text-warm-400 underline"
+            className="text-xs text-amber-500 hover:text-amber-400"
           >
             {showAllBands ? 'Hide' : 'Show all'}
           </button>
@@ -252,7 +234,7 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
                 style={{
                   height: `${((gain + 10) / 20) * 100}%`,
                   minHeight: '3px',
-                  background: gain >= 0 ? 'rgba(212,131,42,0.7)' : 'rgba(96,165,250,0.7)',
+                  background: `rgba(217, 119, 6, ${0.3 + ((gain + 10) / 20) * 0.5})`,
                 }}
               />
             ))}
@@ -264,12 +246,12 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
       <Card className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-base">💡</span>
-          <h3 className="text-sm font-semibold text-warm-200">Why This EQ?</h3>
+          <h3 className="text-sm font-semibold text-amber-400">Why This EQ?</h3>
         </div>
         <ul className="flex flex-col gap-2">
           {eq.reasoning.map((reason, i) => (
-            <li key={i} className="text-xs text-white/60 flex gap-2">
-              <span className="text-warm-400 shrink-0 mt-0.5">→</span>
+            <li key={i} className="text-xs text-stone-400 flex gap-2">
+              <span className="text-amber-500 shrink-0 mt-0.5">→</span>
               <span>{reason}</span>
             </li>
           ))}
@@ -277,14 +259,14 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
       </Card>
 
       {/* Actions */}
-      <div className="flex gap-3 pb-4">
+      <div className="flex gap-3 pb-2">
         <button
           onClick={handleSave}
           className={`
-            flex-1 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300
+            flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300
             ${saved
               ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-              : 'bg-warm-500/20 text-warm-300 border border-warm-500/30 hover:bg-warm-500/30'
+              : 'bg-velvet-gradient text-white shadow-lg shadow-amber-900/20 active:scale-95'
             }
           `}
         >
@@ -292,7 +274,7 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
         </button>
         <button
           onClick={onBack}
-          className="flex-1 py-3.5 rounded-2xl text-sm font-semibold bg-white/8 text-white/60 border border-white/10 hover:bg-white/12 transition-all duration-200"
+          className="flex-1 py-3.5 rounded-2xl text-sm font-bold bg-[#292524] text-stone-300 border border-white/[0.06] hover:bg-[#44403c] transition-all duration-200"
         >
           ↩ New Analysis
         </button>
@@ -311,13 +293,13 @@ export function ResultsScreen({ result, songTitle, vibeMode, onBack, onFeedback,
               w-full py-4 rounded-2xl text-sm font-bold transition-all duration-300
               ${eqApplied
                 ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-                : 'bg-gradient-to-r from-warm-500/30 to-orange-500/30 text-warm-200 border border-warm-500/30 hover:from-warm-500/40 hover:to-orange-500/40'
+                : 'bg-[#292524] text-amber-400 border border-amber-900/20 hover:bg-[#44403c]'
               }
             `}
           >
             {eqApplied ? '✓ Applied to System EQ!' : '🔊 Apply to System EQ'}
           </button>
-          <p className="text-[10px] text-white/30 text-center mt-1.5">
+          <p className="text-[10px] text-stone-600 text-center mt-1.5">
             Applies this EQ to all audio playing on your device
           </p>
         </div>

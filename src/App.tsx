@@ -19,8 +19,14 @@ function useVibe(result: AnalysisResult | null): VibeModeType {
   return result.songProfile.energy > 0.55 ? 'energetic' : 'peaceful';
 }
 
+const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
+  { key: 'home', label: 'Analyze', icon: '🎵' },
+  { key: 'live-eq', label: 'Live EQ', icon: '🎧' },
+  { key: 'presets', label: 'Presets', icon: '📂' },
+  { key: 'insights', label: 'Insights', icon: '🧠' },
+];
+
 export default function App() {
-  // Show IEM setup on first launch, otherwise home
   const [screen, setScreen] = useState<Screen>(() => hasUserIEM() ? 'home' : 'iem-setup');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
@@ -30,7 +36,6 @@ export default function App() {
 
   const vibeMode = useVibe(analysisResult);
 
-  // Initialize ML model on mount
   useEffect(() => {
     initializeMLModel();
   }, []);
@@ -52,7 +57,6 @@ export default function App() {
 
     await new Promise(r => setTimeout(r, 400));
 
-    // Use iTunes analysis if a track was selected, otherwise fall back to heuristic
     let songProfile;
     if (input.iTunesTrack) {
       songProfile = await analyzeFromiTunes(input.iTunesTrack);
@@ -60,7 +64,6 @@ export default function App() {
       songProfile = await analyzeSongWithAudio(input.songTitle, input.audioFile);
     }
 
-    // Always use the saved user IEM profile
     const iemProfile = userIEM;
     const eqRecommendation = hybridRecommendEQ(songProfile, iemProfile, input.preference);
 
@@ -90,9 +93,7 @@ export default function App() {
   const handleApplySystemEQ = useCallback(async () => {
     if (!analysisResult) return;
     try {
-      // Ensure system EQ is initialized
       await initializeSystemEQ();
-      // Apply the current gains
       await applySystemEQ(analysisResult.eqRecommendation.gains);
       console.log('[App] Applied EQ to system audio');
     } catch (err) {
@@ -120,61 +121,33 @@ export default function App() {
     setAnalysisResult(null);
   }
 
-  const bgClass = vibeMode === 'energetic'
-    ? 'bg-gradient-to-br from-[#1a0f06] via-[#1f1008] to-[#0f0e17]'
-    : 'bg-gradient-to-br from-[#0f0e17] via-[#1a1828] to-[#0d0c1a]';
-
   return (
-    <div className={`min-h-screen min-h-dvh transition-colors duration-1000 ${bgClass}`}>
-      {/* Ambient glow */}
-      <div className={`fixed inset-0 pointer-events-none transition-opacity duration-1000 ${vibeMode === 'energetic' ? 'opacity-100' : 'opacity-40'}`}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{ background: vibeMode === 'energetic' ? 'radial-gradient(circle, #f97316, transparent)' : 'radial-gradient(circle, #d4832a, transparent)' }}
-        />
+    <div className="min-h-screen min-h-dvh bg-[#141312]">
+      {/* Ambient amber glow */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/[0.04] blur-[120px] rounded-full" />
+        <div className="absolute bottom-[10%] left-[-5%] w-[400px] h-[400px] bg-amber-900/[0.04] blur-[100px] rounded-full" />
       </div>
 
       {/* Content */}
       <div className="relative max-w-md mx-auto px-4 pt-safe-top pb-safe-bottom">
         {/* Navigation tabs */}
         {screen !== 'results' && screen !== 'iem-setup' && (
-          <div className="sticky top-0 z-10 pt-4 pb-2 backdrop-blur-md">
-            <div className="flex gap-1 bg-white/5 rounded-2xl p-1 border border-white/8">
-              <button
-                onClick={() => setScreen('home')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'home'
-                  ? 'bg-warm-500/30 text-warm-200 shadow-sm'
-                  : 'text-white/40 hover:text-white/60'
+          <div className="sticky top-0 z-10 pt-4 pb-2 backdrop-blur-xl bg-[#141312]/80">
+            <div className="flex gap-1 bg-[#1c1917] rounded-2xl p-1 border border-amber-900/10">
+              {NAV_ITEMS.map(item => (
+                <button
+                  key={item.key}
+                  onClick={() => setScreen(item.key)}
+                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-200 tracking-wide ${
+                    screen === item.key
+                      ? 'bg-amber-900/25 text-amber-400 shadow-[0_0_12px_rgba(217,119,6,0.15)]'
+                      : 'text-stone-500 hover:text-stone-300'
                   }`}
-              >
-                🎵 Analyze
-              </button>
-              <button
-                onClick={() => setScreen('live-eq')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'live-eq'
-                  ? 'bg-green-500/30 text-green-200 shadow-sm'
-                  : 'text-white/40 hover:text-white/60'
-                  }`}
-              >
-                🎧 Live EQ
-              </button>
-              <button
-                onClick={() => setScreen('presets')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'presets'
-                  ? 'bg-warm-500/30 text-warm-200 shadow-sm'
-                  : 'text-white/40 hover:text-white/60'
-                  }`}
-              >
-                📂 Presets
-              </button>
-              <button
-                onClick={() => setScreen('insights')}
-                className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all duration-200 ${screen === 'insights'
-                  ? 'bg-purple-500/30 text-purple-200 shadow-sm'
-                  : 'text-white/40 hover:text-white/60'
-                  }`}
-              >
-                🧠 Insights
-              </button>
+                >
+                  {item.icon} {item.label}
+                </button>
+              ))}
             </div>
           </div>
         )}

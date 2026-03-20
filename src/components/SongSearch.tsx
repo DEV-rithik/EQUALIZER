@@ -30,7 +30,7 @@ export function SongSearch({ value, onChange, onTrackSelect }: SongSearchProps) 
     }, []);
 
     useEffect(() => {
-        if (selectedTrack) return; // Don't search when we just selected
+        if (selectedTrack) return;
         if (debounceRef.current) clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(() => doSearch(value), 350);
         return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
@@ -69,11 +69,8 @@ export function SongSearch({ value, onChange, onTrackSelect }: SongSearchProps) 
 
     return (
         <div ref={containerRef} className="relative">
-            <label className="block text-xs font-semibold text-white/60 mb-1.5 tracking-wide">
-                Song Title or Artist
-            </label>
             <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-500">
                     {selectedTrack ? (
                         <img
                             src={selectedTrack.artworkUrl100}
@@ -91,29 +88,29 @@ export function SongSearch({ value, onChange, onTrackSelect }: SongSearchProps) 
                     value={value}
                     onChange={handleInputChange}
                     onFocus={() => results.length > 0 && !selectedTrack && setShowDropdown(true)}
-                    placeholder="Search any song on the internet..."
-                    className="w-full bg-white/5 border border-white/12 rounded-xl py-3 pl-10 pr-10 text-sm text-white placeholder-white/30 outline-none focus:border-warm-400/50 focus:bg-white/8 transition-all duration-200"
+                    placeholder="Search track, artist, or genre..."
+                    className="w-full bg-[#0c0b0a] border border-white/[0.06] rounded-xl py-4 pl-12 pr-12 text-sm text-stone-100 placeholder-stone-700 outline-none focus:ring-1 focus:ring-amber-600/50 transition-all duration-300"
                 />
                 {/* Loading / Clear indicator */}
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <div className="absolute right-4 top-1/2 -translate-y-1/2">
                     {isSearching ? (
-                        <svg className="w-4 h-4 text-warm-400 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg className="w-4 h-4 text-amber-500 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
                         </svg>
                     ) : selectedTrack ? (
-                        <button onClick={handleClear} className="text-white/30 hover:text-white/60 transition-colors">
+                        <button onClick={handleClear} className="text-stone-500 hover:text-stone-300 transition-colors">
                             <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     ) : value.length > 0 ? (
-                        <span className="text-[10px] text-white/20 font-medium">iTunes</span>
+                        <span className="text-[10px] text-stone-600 font-medium">iTunes</span>
                     ) : null}
                 </div>
             </div>
 
             {/* Hint */}
-            <p className="text-[11px] text-white/25 mt-1.5 pl-1">
+            <p className="text-[11px] text-stone-600 mt-1.5 pl-1">
                 {selectedTrack
                     ? `🍎 Found on iTunes • ${selectedTrack.primaryGenreName}`
                     : 'Searches Apple Music catalog — any song, any artist'
@@ -122,12 +119,12 @@ export function SongSearch({ value, onChange, onTrackSelect }: SongSearchProps) 
 
             {/* Dropdown results */}
             {showDropdown && (
-                <div className="absolute z-50 w-full mt-1 bg-[#1a1828]/95 backdrop-blur-xl border border-white/15 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden animate-fade-in">
+                <div className="absolute z-50 w-full mt-1 bg-[#1c1917]/95 backdrop-blur-xl border border-amber-900/20 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden animate-fade-in">
                     {results.map((track) => (
                         <button
                             key={track.trackId}
                             onClick={() => handleSelect(track)}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/8 transition-colors text-left"
+                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.06] transition-colors text-left"
                         >
                             <img
                                 src={track.artworkUrl100}
@@ -135,10 +132,10 @@ export function SongSearch({ value, onChange, onTrackSelect }: SongSearchProps) 
                                 className="w-10 h-10 rounded-lg shadow-md shrink-0"
                             />
                             <div className="min-w-0 flex-1">
-                                <p className="text-sm text-white font-medium truncate">{track.trackName}</p>
-                                <p className="text-xs text-white/40 truncate">{track.artistName} • {track.primaryGenreName}</p>
+                                <p className="text-sm text-stone-100 font-medium truncate">{track.trackName}</p>
+                                <p className="text-xs text-stone-500 truncate">{track.artistName} • {track.primaryGenreName}</p>
                             </div>
-                            <span className="text-[10px] text-white/20 shrink-0">🍎</span>
+                            <span className="text-[10px] text-stone-600 shrink-0">🍎</span>
                         </button>
                     ))}
                 </div>

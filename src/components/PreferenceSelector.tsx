@@ -15,27 +15,24 @@ const OPTIONS: { value: ListenerPreference; label: string; icon: string; desc: s
 
 export function PreferenceSelector({ value, onChange }: PreferenceSelectorProps) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-warm-200">Listener Preference</label>
-      <div className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-2">
+      <label className="text-xs font-bold uppercase tracking-widest text-stone-400 px-1">Sonic Profile</label>
+      <div className="grid grid-cols-2 gap-3">
         {OPTIONS.map(opt => (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
             className={`
-              flex items-center gap-2 rounded-xl px-3 py-2.5 text-left
-              border transition-all duration-200
+              flex flex-col items-center gap-1.5 rounded-xl px-3 py-3.5 text-center
+              transition-all duration-300 active:scale-95
               ${value === opt.value
-                ? 'bg-warm-500/25 border-warm-400/60 text-warm-200'
-                : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white/80'
+                ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(217,119,6,0.3)]'
+                : 'bg-[#292524] text-stone-400 hover:text-amber-400'
               }
             `}
           >
             <span className="text-lg">{opt.icon}</span>
-            <div>
-              <div className="text-xs font-semibold leading-tight">{opt.label}</div>
-              <div className="text-[10px] opacity-60 leading-tight">{opt.desc}</div>
-            </div>
+            <span className="text-xs font-bold uppercase tracking-wider">{opt.label}</span>
           </button>
         ))}
       </div>
