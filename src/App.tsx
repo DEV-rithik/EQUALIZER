@@ -11,19 +11,20 @@ import { PresetsScreen } from './screens/PresetsScreen';
 import { IEMSetupScreen } from './screens/IEMSetupScreen';
 import { InsightsScreen } from './screens/InsightsScreen';
 import { LiveEQScreen } from './screens/LiveEQScreen';
+import { CustomEQScreen } from './screens/CustomEQScreen';
 
-type Screen = 'home' | 'results' | 'presets' | 'iem-setup' | 'insights' | 'live-eq';
+type Screen = 'home' | 'results' | 'presets' | 'iem-setup' | 'insights' | 'live-eq' | 'custom-eq';
 
 function useVibe(result: AnalysisResult | null): VibeModeType {
   if (!result) return 'peaceful';
   return result.songProfile.energy > 0.55 ? 'energetic' : 'peaceful';
 }
 
+// Bottom nav items: Home (Analyse), Presets, Insights — no more Live EQ in nav
 const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
-  { key: 'home', label: 'Analyze', icon: '🎵' },
-  { key: 'live-eq', label: 'Live EQ', icon: '🎧' },
-  { key: 'presets', label: 'Presets', icon: '📂' },
-  { key: 'insights', label: 'Insights', icon: '🧠' },
+  { key: 'home', label: 'Home', icon: 'home' },
+  { key: 'presets', label: 'Library', icon: 'library_music' },
+  { key: 'insights', label: 'Insights', icon: 'analytics' },
 ];
 
 export default function App() {
@@ -96,6 +97,8 @@ export default function App() {
       await initializeSystemEQ();
       await applySystemEQ(analysisResult.eqRecommendation.gains);
       console.log('[App] Applied EQ to system audio');
+      // Redirect to Live EQ page after applying
+      setScreen('live-eq');
     } catch (err) {
       console.error('[App] Failed to apply system EQ:', err);
     }
@@ -121,80 +124,101 @@ export default function App() {
     setAnalysisResult(null);
   }
 
+  const isFullScreen = screen === 'results' || screen === 'iem-setup' || screen === 'live-eq' || screen === 'custom-eq';
+
   return (
-    <div className="min-h-screen min-h-dvh bg-[#141312]">
-      {/* Ambient amber glow */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-500/[0.04] blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] left-[-5%] w-[400px] h-[400px] bg-amber-900/[0.04] blur-[100px] rounded-full" />
-      </div>
+    <div className="min-h-screen min-h-dvh bg-background text-on-background font-body antialiased">
+      {/* Top App Bar */}
+      {!isFullScreen && (
+        <header className="fixed top-0 w-full z-50 glass-header flex justify-between items-center px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>graphic_eq</span>
+            </div>
+            <h1 className="font-headline font-bold tracking-tight text-zinc-900 text-xl">Equalizer</h1>
+          </div>
+          <button
+            onClick={() => setScreen('iem-setup')}
+            className="hover:opacity-80 transition-opacity active:scale-95 duration-200"
+          >
+            <span className="material-symbols-outlined text-rose-600 text-2xl">settings</span>
+          </button>
+        </header>
+      )}
 
       {/* Content */}
-      <div className="relative max-w-md mx-auto px-4 pt-safe-top pb-safe-bottom">
-        {/* Navigation tabs */}
-        {screen !== 'results' && screen !== 'iem-setup' && (
-          <div className="sticky top-0 z-10 pt-4 pb-2 backdrop-blur-xl bg-[#141312]/80">
-            <div className="flex gap-1 bg-[#1c1917] rounded-2xl p-1 border border-amber-900/10">
-              {NAV_ITEMS.map(item => (
-                <button
-                  key={item.key}
-                  onClick={() => setScreen(item.key)}
-                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-200 tracking-wide ${
-                    screen === item.key
-                      ? 'bg-amber-900/25 text-amber-400 shadow-[0_0_12px_rgba(217,119,6,0.15)]'
-                      : 'text-stone-500 hover:text-stone-300'
-                  }`}
-                >
-                  {item.icon} {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
+      <main className={isFullScreen ? '' : 'pt-24 pb-32 px-6 max-w-2xl mx-auto'}>
+        {screen === 'iem-setup' && (
+          <IEMSetupScreen
+            onSave={handleSaveIEM}
+            existingProfile={userIEM}
+          />
         )}
+        {screen === 'home' && (
+          <HomeScreen
+            onAnalyze={handleAnalyze}
+            isAnalyzing={isAnalyzing}
+            userIEM={userIEM}
+            onEditIEM={() => setScreen('iem-setup')}
+            onOpenEqualizer={() => setScreen('custom-eq')}
+            onOpenPresets={() => setScreen('presets')}
+          />
+        )}
+        {screen === 'results' && analysisResult && (
+          <ResultsScreen
+            result={analysisResult}
+            songTitle={lastInput?.songTitle ?? ''}
+            iemModel={lastInput?.iemModel ?? ''}
+            preference={lastInput?.preference ?? 'balanced'}
+            vibeMode={vibeMode}
+            onBack={handleBack}
+            onApplySystemEQ={handleApplySystemEQ}
+          />
+        )}
+        {screen === 'live-eq' && (
+          <LiveEQScreen
+            lastAppliedEQ={lastEQRecommendation}
+            songTitle={lastInput?.songTitle}
+            iemModel={lastInput?.iemModel}
+            onBack={() => setScreen('home')}
+            onFeedback={handleFeedback}
+          />
+        )}
+        {screen === 'custom-eq' && (
+          <CustomEQScreen
+            onBack={() => setScreen('home')}
+          />
+        )}
+        {screen === 'presets' && (
+          <PresetsScreen onLoad={handleLoadPreset} />
+        )}
+        {screen === 'insights' && (
+          <InsightsScreen />
+        )}
+      </main>
 
-        {/* Screens */}
-        <div className="py-4">
-          {screen === 'iem-setup' && (
-            <IEMSetupScreen
-              onSave={handleSaveIEM}
-              existingProfile={userIEM}
-            />
-          )}
-          {screen === 'home' && (
-            <HomeScreen
-              onAnalyze={handleAnalyze}
-              isAnalyzing={isAnalyzing}
-              userIEM={userIEM}
-              onEditIEM={() => setScreen('iem-setup')}
-            />
-          )}
-          {screen === 'results' && analysisResult && (
-            <ResultsScreen
-              result={analysisResult}
-              songTitle={lastInput?.songTitle ?? ''}
-              iemModel={lastInput?.iemModel ?? ''}
-              preference={lastInput?.preference ?? 'balanced'}
-              vibeMode={vibeMode}
-              onBack={handleBack}
-              onFeedback={handleFeedback}
-              onApplySystemEQ={handleApplySystemEQ}
-            />
-          )}
-          {screen === 'live-eq' && (
-            <LiveEQScreen
-              lastAppliedEQ={lastEQRecommendation}
-              songTitle={lastInput?.songTitle}
-              iemModel={lastInput?.iemModel}
-            />
-          )}
-          {screen === 'presets' && (
-            <PresetsScreen onLoad={handleLoadPreset} />
-          )}
-          {screen === 'insights' && (
-            <InsightsScreen />
-          )}
-        </div>
-      </div>
+      {/* Bottom Navigation Bar */}
+      {!isFullScreen && (
+        <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 glass-header border-t border-zinc-100/50 z-50">
+          {NAV_ITEMS.map(item => (
+            <button
+              key={item.key}
+              onClick={() => setScreen(item.key)}
+              className={`flex flex-col items-center justify-center active:scale-90 transition-transform ${
+                screen === item.key
+                  ? 'text-rose-600'
+                  : 'text-zinc-400 hover:text-zinc-900'
+              }`}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={screen === item.key ? { fontVariationSettings: "'FILL' 1" } : undefined}
+              >{item.icon}</span>
+              <span className="text-[10px] font-medium tracking-wide mt-1">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

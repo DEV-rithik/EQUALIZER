@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Presets - Equalizer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#e8e8e8",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#1a1c1c",
+              "on-tertiary-fixed": "#310048",
+              "surface-tint": "#be0036",
+              "on-error": "#ffffff",
+              "outline": "#916e6f",
+              "surface-variant": "#e2e2e2",
+              "surface-container": "#eeeeee",
+              "on-primary-fixed": "#40000c",
+              "on-secondary-container": "#fffbff",
+              "secondary-fixed-dim": "#c2c1ff",
+              "secondary-fixed": "#e2dfff",
+              "surface-bright": "#f9f9f9",
+              "on-surface-variant": "#5d3f40",
+              "error": "#ba1a1a",
+              "surface-dim": "#dadada",
+              "surface-container-highest": "#e2e2e2",
+              "primary": "#ba0034",
+              "on-tertiary-fixed-variant": "#7201a2",
+              "inverse-on-surface": "#f1f1f1",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#ffdada",
+              "primary-fixed-dim": "#ffb3b5",
+              "primary-container": "#e51245",
+              "inverse-surface": "#2f3131",
+              "on-secondary-fixed": "#0c006a",
+              "surface": "#f9f9f9",
+              "outline-variant": "#e6bcbd",
+              "tertiary-fixed": "#f6d9ff",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#a649d5",
+              "on-background": "#1a1c1c",
+              "on-primary-container": "#fffbff",
+              "background": "#f9f9f9",
+              "tertiary-fixed-dim": "#e8b3ff",
+              "on-primary-fixed-variant": "#920027",
+              "on-primary": "#ffffff",
+              "secondary-container": "#6664e4",
+              "on-secondary-fixed-variant": "#3631b4",
+              "surface-container-low": "#f4f3f3",
+              "secondary": "#4c4aca",
+              "tertiary": "#8a2bb9",
+              "on-tertiary-container": "#fffbff",
+              "inverse-primary": "#ffb3b5"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .glass-header {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- Top Navigation Anchor (As per Shared Components JSON) -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-['Inter'] font-bold tracking-tight text-zinc-900 text-xl">Equalizer</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhko5XgqcTst1P_fTK932SICUhmlefrQMqCiK2vZtOhL2maBzQQq-WD-3Ko3chT_PNoLELHg4sRXrqC_jYGoa3svKndfMy0o6ZwW14ECy-nY_UhZxaeIS5Ze62gXkuZCnPV3ZCPWQ7QAC0fJ1bfiqtyjoCZkp3YQNUXhYHuuMdPGiBxSX4E7uSeEaguSQEiamgJnsMfqfoaxP8iaSDQlfXnwXTgshQlGbxgRl8WxGfiyrAv77uQ13gORNZ_1bjDRZN3b3lteYoATf_"/>
+</div>
+<span class="material-symbols-outlined text-zinc-400">settings</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<p class="text-primary font-bold tracking-[0.05em] text-[0.75rem] uppercase mb-2">Your Library</p>
+<h2 class="text-5xl font-extrabold tracking-tighter text-on-surface leading-tight">Saved Presets</h2>
+</section>
+<!-- Search / Filter Bar (Editorial Style) -->
+<div class="mb-10">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary/40 transition-all text-on-surface placeholder:text-on-surface-variant/60" placeholder="Search your presets..." type="text"/>
+</div>
+</div>
+<!-- Preset Grid (Asymmetric Bento Inspired Layout) -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+<!-- Active Preset (Highlighted) -->
+<div class="col-span-2 md:col-span-2 group cursor-pointer active:scale-[0.98] transition-all">
+<div class="relative aspect-[21/9] rounded-xl overflow-hidden mb-4 bg-primary shadow-lg shadow-primary/10">
+<img class="w-full h-full object-cover opacity-80 mix-blend-overlay" data-alt="Abstract colorful neon stage lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiByCPzQTDx7sr3jvnsrcjOWU8JaQv0cBns6nhq6k1lTFvmI36ZbJk3bQpyxvNlLkOcbkfwL8CLLQUaFu8NjfY-bGB82q11L3znI9yf0DbtTkdu-Nu4iyVfHARBRVoDlFPSIBmQePDCMZ38SbZdbQ5810amQiqKZEeQvyK9_IV8e50CWNjteHhRpR_D-CBDMWjFRXo3vZSRFLbDEXOOGh4uI9yNtYYGiFDd1g2sUh6hMVo47hifwzAO30kvdUbmnBFKqq-r5fl_aBU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">equalizer</span>
+<span class="text-white/80 text-[10px] font-bold tracking-widest uppercase">Currently Active</span>
+</div>
+<h3 class="text-3xl font-bold text-white tracking-tight">Arena Rock</h3>
+</div>
+</div>
+<div class="flex justify-between items-start px-1">
+<div>
+<p class="text-on-surface-variant text-sm">Optimized for wide soundstages</p>
+</div>
+<span class="material-symbols-outlined text-primary">more_horiz</span>
+</div>
+</div>
+<!-- Preset Card 1 -->
+<div class="group cursor-pointer active:scale-[0.98] transition-all">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 bg-surface-container-low transition-transform group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="Album art with soft purple gradients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwIx1_0scXd_HuH6tkiKBh8793U3aJSAnnEoU1Ioq_qjdlB_WHI5i13cK4WOSG9oAwMfkgplEEnT-cy51wvTM-LV69S-RD9f7zRkY4XHghbIFRFidFJX9Ye2hWXGqhQKwVLC5YGzBl4BwM6R0NtHE-5TuEQeUickDPa_mYTe5CUnFV5jiz2ANBm2jn129dUhJcrDAPeP_TJ21dFrSPugAPyfVN-RN5FlDtcof65w6zXO8WANlLjpH7IgIR5h50ElxlXTzj2d-jyaAV"/>
+</div>
+<div class="px-1">
+<h4 class="font-bold text-lg text-on-surface tracking-tight">Midnight Jazz</h4>
+<p class="text-on-surface-variant text-sm">Deep bass, warm mids</p>
+</div>
+</div>
+<!-- Preset Card 2 -->
+<div class="group cursor-pointer active:scale-[0.98] transition-all">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 bg-surface-container-low transition-transform group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="Grayscale aesthetic portrait of a musician" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6HiJTZnQY8DFHFoFe2zxzdXxvV_AGScPe9xlYpobKsgM2JQOyFmfDBe6ULkIXyH-PLQH7W-WPk5ZwPpB3bUINw7j4wNHDyk5YCYQ1mrjKXPd_fsTeX-MuTVmjVAhTNofOAZgwbrzqdwsQXvRnKJaWv-gThetqdLbwXWMXndSt99OQULefO_A0f_FgP-CVmzp8hR8vNysrL6xbb_UpoDUiIYTGOa0I2YLSls2iieIpRvLenG-oxXOFrxRvfFXzhbU92zqvn2FCfsdf"/>
+</div>
+<div class="px-1">
+<h4 class="font-bold text-lg text-on-surface tracking-tight">Lo-Fi Study</h4>
+<p class="text-on-surface-variant text-sm">Filtered highs, cozy vibes</p>
+</div>
+</div>
+<!-- Preset Card 3 -->
+<div class="group cursor-pointer active:scale-[0.98] transition-all">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 bg-surface-container-low transition-transform group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="Minimalist geometric architectural pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwAyguOr1iI9QCyDhFlTGSiSylLNFalimQ2EedW5FkV4PACieXmYa9dmo_eLuMxNt6k9gfiwwZaKeoqBXBcbKPK-5vl5fgbC1RytO4LbUUTPhrVm_w64BB1TC5T87vn8g6-TSURwd1CqPsaSbV1T7PJ-5teftV_8orizVKalV-d8rcimZbyvADzoDgRWxtdDS5gR72cDlvhVqDjHuWJSTmZuvrRT3ff8oFDfM5ugwTHdghBAm3Auq01_HkMYintwEhRPHGgbJzJTcD"/>
+</div>
+<div class="px-1">
+<h4 class="font-bold text-lg text-on-surface tracking-tight">Studio Pure</h4>
+<p class="text-on-surface-variant text-sm">Flat response reference</p>
+</div>
+</div>
+<!-- Preset Card 4 -->
+<div class="group cursor-pointer active:scale-[0.98] transition-all">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 bg-surface-container-low transition-transform group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="Abstract vibrant red and blue gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWS_mgcWPpds1TJXEP1RoHPaxw5UcmzPA6yT-mi3yydsYCASl0Um7-PxvNd27ualbNZsTkUMqGbAuSXHo5lcHE6Ym45f5f5s-qYgElAGU4kDFHjb5OUX9f7PwhyfsWzykuyHzcIHj0CCCCWBBBbOR8rUDBSE2K3McnOLMCUqau22hOuMrlnbLkTMN8XACP8pK93R0OwcA-rknDItB2limring8Juodfz5RnNx3HkLW9SFbu1OCOhesrpw5MdJWuY1mYko6R0HdMIB3"/>
+</div>
+<div class="px-1">
+<h4 class="font-bold text-lg text-on-surface tracking-tight">Electro Pulse</h4>
+<p class="text-on-surface-variant text-sm">Aggressive sub-bass</p>
+</div>
+</div>
+<!-- Add New Preset Placeholder -->
+<div class="group cursor-pointer active:scale-[0.98] transition-all">
+<div class="aspect-square rounded-xl mb-4 border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary text-4xl">add_circle</span>
+<span class="font-semibold text-on-surface-variant text-sm">New Preset</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (As per Shared Components JSON) -->
+<!-- Library is the active tab for this screen -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-100/50 dark:border-zinc-800/50 z-50">
+<button class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 tap-highlight-transparent active:scale-90 transition-transform">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 tap-highlight-transparent active:scale-90 transition-transform">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 tap-highlight-transparent active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">library_music</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Library</span>
+</button>
+</nav>
+<!-- Floating Playback Bar (Ambient depth) -->
+<div class="fixed bottom-24 left-6 right-6 h-16 bg-white rounded-full flex items-center px-2 shadow-[0_40px_40px_rgba(190,0,54,0.08)] z-40 border border-white/20">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Album art of current track" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf-IKQXUeSoEdWsUf2yD_yNgpa84_1pWV2-d6D3QFWzRV5PMjyjslOIjgof8pAjYy5eVy2eb0xcj-K1NOvxlg6ibASc0wYAXDJgj0skmQ9O4pgPpkbLaJd2bfvCQv2kARXiitKCX1SCCIMTRvgwqpeWCatUcgT335ktkjidWoSPV-FdkWG8VvlrAbHGyI3QkHRkmFsXSLPymqZqcJnQj4ZfIJeXUZl4kxAsOxoxXLrzynb4NLocqTgZuybTQdx0ZfbIcNyocFgV0ZO"/>
+</div>
+<div class="ml-4 flex-grow">
+<h5 class="text-xs font-bold text-on-surface leading-tight truncate">Starlight Symphony</h5>
+<p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">The Midnight Echo</p>
+</div>
+<div class="flex items-center gap-1 mr-2">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">skip_previous</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+</div>
+</div>
+</body></html>

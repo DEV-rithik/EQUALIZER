@@ -6,33 +6,35 @@ interface PreferenceSelectorProps {
   onChange: (v: ListenerPreference) => void;
 }
 
-const OPTIONS: { value: ListenerPreference; label: string; icon: string; desc: string }[] = [
-  { value: 'balanced', label: 'Balanced', icon: '⚖️', desc: 'Neutral, reference-class' },
-  { value: 'bass', label: 'Bass', icon: '🔊', desc: 'Deep, punchy low-end' },
-  { value: 'vocals', label: 'Vocals', icon: '🎤', desc: 'Forward, clear vocals' },
-  { value: 'sparkle', label: 'Sparkle', icon: '✨', desc: 'Bright, airy highs' },
+const PREFERENCES: { value: ListenerPreference; label: string; icon: string }[] = [
+  { value: 'balanced', label: 'Balanced', icon: 'tune' },
+  { value: 'bass', label: 'Bass', icon: 'graphic_eq' },
+  { value: 'vocals', label: 'Vocals', icon: 'mic' },
+  { value: 'sparkle', label: 'Sparkle', icon: 'auto_awesome' },
 ];
 
 export function PreferenceSelector({ value, onChange }: PreferenceSelectorProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <label className="text-xs font-bold uppercase tracking-widest text-stone-400 px-1">Sonic Profile</label>
-      <div className="grid grid-cols-2 gap-3">
-        {OPTIONS.map(opt => (
+    <div className="space-y-3">
+      <span className="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant block">Listening Preference</span>
+      <div className="grid grid-cols-4 gap-2">
+        {PREFERENCES.map(pref => (
           <button
-            key={opt.value}
-            onClick={() => onChange(opt.value)}
+            key={pref.value}
+            type="button"
+            onClick={() => onChange(pref.value)}
             className={`
-              flex flex-col items-center gap-1.5 rounded-xl px-3 py-3.5 text-center
-              transition-all duration-300 active:scale-95
-              ${value === opt.value
-                ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(217,119,6,0.3)]'
-                : 'bg-[#292524] text-stone-400 hover:text-amber-400'
+              flex flex-col items-center gap-1.5 py-3 px-2 rounded-lg transition-all duration-200
+              ${value === pref.value
+                ? 'bg-primary/10 text-primary ring-1 ring-primary/30'
+                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
               }
             `}
           >
-            <span className="text-lg">{opt.icon}</span>
-            <span className="text-xs font-bold uppercase tracking-wider">{opt.label}</span>
+            <span className="material-symbols-outlined text-lg"
+              style={value === pref.value ? { fontVariationSettings: "'FILL' 1" } : undefined}
+            >{pref.icon}</span>
+            <span className="text-[10px] font-bold tracking-wide">{pref.label}</span>
           </button>
         ))}
       </div>

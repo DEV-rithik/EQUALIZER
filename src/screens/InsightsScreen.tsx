@@ -5,17 +5,17 @@ import { loadFeedback, clearMLData } from '../utils/storage';
 import { mlModel } from '../engine/mlModel';
 
 const GENRE_COLORS: Record<string, string> = {
-    'pop': 'bg-amber-400', 'rock': 'bg-amber-500', 'electronic': 'bg-amber-300',
-    'jazz': 'bg-amber-600', 'classical': 'bg-amber-200', 'hip-hop': 'bg-amber-500',
-    'r&b': 'bg-amber-400', 'metal': 'bg-amber-700', 'folk': 'bg-amber-300',
-    'ambient': 'bg-amber-200', 'unknown': 'bg-stone-500',
+    'pop': 'bg-primary', 'rock': 'bg-primary/80', 'electronic': 'bg-primary',
+    'jazz': 'bg-zinc-500', 'classical': 'bg-zinc-500', 'hip-hop': 'bg-primary/60',
+    'r&b': 'bg-primary/70', 'metal': 'bg-primary/90', 'folk': 'bg-zinc-400',
+    'ambient': 'bg-zinc-400', 'unknown': 'bg-zinc-500',
 };
 
 const RATING_CONFIG = {
-    'perfect': { emoji: '🎯', label: 'Perfect', color: 'bg-amber-400', textColor: 'text-amber-300' },
-    'good': { emoji: '👍', label: 'Good', color: 'bg-amber-500', textColor: 'text-amber-400' },
-    'needs_work': { emoji: '🔧', label: 'Needs Work', color: 'bg-amber-600', textColor: 'text-amber-500' },
-    'bad': { emoji: '👎', label: 'Bad', color: 'bg-stone-500', textColor: 'text-stone-400' },
+    'perfect': { label: 'Perfect', color: 'bg-primary', textColor: 'text-primary' },
+    'good': { label: 'Good', color: 'bg-primary/60', textColor: 'text-on-surface' },
+    'needs_work': { label: 'Needs Work', color: 'bg-zinc-400', textColor: 'text-on-surface-variant' },
+    'bad': { label: 'Bad', color: 'bg-zinc-300', textColor: 'text-on-surface-variant' },
 };
 
 export function InsightsScreen() {
@@ -65,151 +65,125 @@ export function InsightsScreen() {
     }
 
     return (
-        <div className="flex flex-col gap-5 animate-fade-in">
+        <div className="space-y-8 animate-fade-in">
             {/* Header */}
-            <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-500 mb-1 block">Intelligence</span>
-                <h1 className="text-2xl font-extrabold text-stone-100 tracking-tight">ML Insights</h1>
-                <p className="text-xs text-stone-500 mt-1">What the model is learning from your feedback</p>
-            </div>
+            <section>
+                <span className="text-[10px] font-medium tracking-widest text-on-surface-variant uppercase mb-1 block">Advanced Processing</span>
+                <h2 className="text-3xl font-bold tracking-tight text-on-surface">Acoustic Intelligence</h2>
+            </section>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-3">
-                <Card className="p-3 text-center">
-                    <p className="text-2xl font-extrabold text-stone-100">{totalFeedback}</p>
-                    <p className="text-[10px] text-stone-500 mt-0.5">Feedback</p>
-                </Card>
-                <Card className="p-3 text-center">
-                    <p className="text-2xl font-extrabold text-amber-400">{Math.round(blendAlpha * 100)}%</p>
-                    <p className="text-[10px] text-stone-500 mt-0.5">ML Weight</p>
-                </Card>
-                <Card className="p-3 text-center">
-                    <p className="text-2xl font-extrabold text-amber-300">{Math.round(modelConfidence * 100)}%</p>
-                    <p className="text-[10px] text-stone-500 mt-0.5">Confidence</p>
-                </Card>
-            </div>
-
-            {/* Rating Distribution */}
-            <Card className="p-5">
-                <h3 className="text-sm font-bold text-amber-400 mb-3">📊 Rating Distribution</h3>
-                {totalFeedback === 0 ? (
-                    <p className="text-xs text-stone-600 text-center py-4">No feedback yet. Rate some EQ results!</p>
-                ) : (
-                    <div className="flex flex-col gap-2.5">
-                        {(Object.keys(RATING_CONFIG) as Array<keyof typeof RATING_CONFIG>).map(rating => {
-                            const count = ratingCounts[rating];
-                            const pct = totalFeedback > 0 ? (count / totalFeedback) * 100 : 0;
-                            const cfg = RATING_CONFIG[rating];
-                            return (
-                                <div key={rating}>
-                                    <div className="flex items-center justify-between text-xs mb-1">
-                                        <span className={`${cfg.textColor} font-medium`}>{cfg.emoji} {cfg.label}</span>
-                                        <span className="text-stone-500">{count} ({Math.round(pct)}%)</span>
-                                    </div>
-                                    <div className="h-2 bg-[#292524] rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full rounded-full ${cfg.color} transition-all duration-700`}
-                                            style={{ width: `${pct}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
+            {/* ML Insights Card — Dark inverse-surface */}
+            <div className="relative overflow-hidden rounded-xl bg-inverse-surface text-inverse-on-surface p-8">
+                <div className="absolute top-0 right-0 p-6 opacity-20">
+                    <span className="material-symbols-outlined text-6xl">neurology</span>
+                </div>
+                <div className="relative z-10 space-y-6">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                            <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>analytics</span>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold">ML Insights</h3>
+                            <p className="text-zinc-400 text-sm">Neural Audio Calibration Engine</p>
+                        </div>
                     </div>
-                )}
-            </Card>
 
-            {/* Genre Distribution */}
-            <Card className="p-5">
-                <h3 className="text-sm font-bold text-amber-400 mb-3">🎵 Genre Feedback</h3>
-                {genreCounts.length === 0 ? (
-                    <p className="text-xs text-stone-600 text-center py-4">No genre data yet</p>
-                ) : (
-                    <div className="flex flex-col gap-2.5">
-                        {genreCounts.map(([genre, count]) => (
-                            <div key={genre}>
-                                <div className="flex items-center justify-between text-xs mb-1">
-                                    <span className="text-stone-300 capitalize font-medium">{genre}</span>
-                                    <span className="text-stone-500">{count}</span>
-                                </div>
-                                <div className="h-1.5 bg-[#292524] rounded-full overflow-hidden">
-                                    <div
-                                        className={`h-full rounded-full ${GENRE_COLORS[genre] ?? 'bg-stone-500'} transition-all duration-700`}
-                                        style={{ width: `${(count / maxGenreCount) * 100}%` }}
-                                    />
-                                </div>
+                    {/* Stats Row */}
+                    <div className="mt-8 bg-zinc-900/50 rounded-lg p-6 border border-zinc-800 space-y-8">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div className="space-y-1">
+                                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">ML Weight</p>
+                                <p className="text-2xl font-bold text-primary-fixed-dim">{blendAlpha.toFixed(3)}</p>
                             </div>
-                        ))}
-                    </div>
-                )}
-            </Card>
-
-            {/* Model Details */}
-            <Card className="p-5">
-                <h3 className="text-sm font-bold text-amber-400 mb-3">🔬 Model Details</h3>
-                <div className="flex flex-col gap-2.5 text-xs">
-                    <div className="flex justify-between">
-                        <span className="text-stone-500">Architecture</span>
-                        <span className="text-stone-300 font-mono">20 → 32 → 15</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-stone-500">Parameters</span>
-                        <span className="text-stone-300 font-mono">{20 * 32 + 32 + 32 * 15 + 15}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-stone-500">Training Data</span>
-                        <span className="text-stone-300">50 curated entries</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-stone-500">Online Updates</span>
-                        <span className="text-stone-300">{modelFeedbackCount} applied</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-stone-500">ML Blend</span>
-                        <span className="text-stone-300">{Math.round(blendAlpha * 100)}% ML + {Math.round((1 - blendAlpha) * 100)}% Rules</span>
-                    </div>
-                    <div className="mt-1 pt-2 border-t border-white/[0.06]">
-                        <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-[#292524] rounded-full overflow-hidden">
-                                <div className="flex h-full">
-                                    <div className="bg-amber-400 rounded-l-full transition-all duration-500" style={{ width: `${blendAlpha * 100}%` }} />
-                                    <div className="bg-amber-700 rounded-r-full transition-all duration-500" style={{ width: `${(1 - blendAlpha) * 100}%` }} />
-                                </div>
+                            <div className="space-y-1">
+                                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Confidence</p>
+                                <p className="text-2xl font-bold text-white">{(modelConfidence * 100).toFixed(1)}%</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Feedback</p>
+                                <p className="text-2xl font-bold text-white">{totalFeedback}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Updates</p>
+                                <p className="text-2xl font-bold text-white">{modelFeedbackCount}</p>
                             </div>
                         </div>
-                        <div className="flex justify-between text-[10px] mt-1">
-                            <span className="text-amber-400">ML Model</span>
-                            <span className="text-amber-700">Rules Engine</span>
+
+                        {/* Rating Distribution */}
+                        {totalFeedback > 0 && (
+                            <div className="space-y-4">
+                                <h4 className="text-sm font-bold text-zinc-300">Rating Distribution</h4>
+                                <div className="flex items-end gap-2 h-32 pt-4">
+                                    {(Object.keys(RATING_CONFIG) as Array<keyof typeof RATING_CONFIG>).map(rating => {
+                                        const count = ratingCounts[rating];
+                                        const pct = totalFeedback > 0 ? (count / totalFeedback) * 100 : 0;
+                                        return (
+                                            <div
+                                                key={rating}
+                                                className={`flex-1 rounded-t-sm transition-all hover:bg-primary/40 ${
+                                                    pct > 60 ? 'bg-primary' : 'bg-zinc-800'
+                                                }`}
+                                                style={{ height: `${Math.max(pct, 5)}%` }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Genre Synergy */}
+                        {genreCounts.length > 0 && (
+                            <div className="space-y-4">
+                                <h4 className="text-sm font-bold text-zinc-300">Genre Synergy</h4>
+                                <div className="space-y-3">
+                                    {genreCounts.slice(0, 4).map(([genre, count]) => (
+                                        <div key={genre}>
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs text-zinc-400 capitalize">{genre}</span>
+                                                <span className={`text-xs font-bold ${count / maxGenreCount > 0.8 ? 'text-primary' : 'text-zinc-300'}`}>
+                                                    {count / maxGenreCount > 0.8 ? 'High' : 'Optimal'}
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full ${count / maxGenreCount > 0.8 ? 'bg-primary' : 'bg-zinc-500'}`}
+                                                    style={{ width: `${(count / maxGenreCount) * 100}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Footer */}
+                        <div className="pt-6 border-t border-zinc-800/50 flex flex-wrap gap-4 items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined text-zinc-500 text-sm">terminal</span>
+                                <span className="text-[10px] font-mono text-zinc-500">ARCH: 20→32→15 | PARAMS: {20 * 32 + 32 + 32 * 15 + 15}</span>
+                            </div>
+                            <button
+                                onClick={handleReset}
+                                className={`text-xs font-bold flex items-center gap-1 ${
+                                    resetConfirm ? 'text-error' : 'text-primary'
+                                }`}
+                            >
+                                {resetConfirm ? 'CONFIRM RESET' : 'RESET DATA'}
+                                <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </Card>
+            </div>
 
-            {/* How it works */}
-            <Card className="p-5">
-                <h3 className="text-sm font-bold text-amber-400 mb-2">💡 How Learning Works</h3>
-                <ul className="text-xs text-stone-500 space-y-1.5">
-                    <li>• The ML model starts at <strong className="text-stone-300">30% influence</strong> over final EQ</li>
-                    <li>• Each positive rating (Perfect/Good) increases its influence</li>
-                    <li>• Maximum ML influence caps at <strong className="text-stone-300">70%</strong></li>
-                    <li>• Negative ratings push the model away from those predictions</li>
-                    <li>• The model learns your personal preferences over time</li>
-                </ul>
+            {/* How ML Works */}
+            <Card className="p-6">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-4">How It Works</h3>
+                <div className="space-y-3 text-sm text-on-surface-variant">
+                    <p>The ML model starts at <strong className="text-on-surface">30% influence</strong> over final EQ and grows as you provide positive feedback.</p>
+                    <p>Maximum ML influence caps at <strong className="text-on-surface">70%</strong>. The remaining weight always comes from the rules engine for stability.</p>
+                </div>
             </Card>
-
-            {/* Reset */}
-            <button
-                onClick={handleReset}
-                className={`
-                    w-full py-3.5 rounded-2xl text-sm font-bold border transition-all duration-300
-                    ${resetConfirm
-                        ? 'bg-red-500/20 text-red-300 border-red-500/30 hover:bg-red-500/30'
-                        : 'bg-[#1c1917] text-stone-500 border-white/[0.06] hover:text-stone-300 hover:bg-[#292524]'
-                    }
-                `}
-            >
-                {resetConfirm ? '⚠️ Confirm: Delete all feedback & reset model?' : '🗑️ Reset ML Model'}
-            </button>
 
             <div className="h-4" />
         </div>

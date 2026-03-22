@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Equalizer - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#e8e8e8",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#1a1c1c",
+              "on-tertiary-fixed": "#310048",
+              "surface-tint": "#be0036",
+              "on-error": "#ffffff",
+              "outline": "#916e6f",
+              "surface-variant": "#e2e2e2",
+              "surface-container": "#eeeeee",
+              "on-primary-fixed": "#40000c",
+              "on-secondary-container": "#fffbff",
+              "secondary-fixed-dim": "#c2c1ff",
+              "secondary-fixed": "#e2dfff",
+              "surface-bright": "#f9f9f9",
+              "on-surface-variant": "#5d3f40",
+              "error": "#ba1a1a",
+              "surface-dim": "#dadada",
+              "surface-container-highest": "#e2e2e2",
+              "primary": "#ba0034",
+              "on-tertiary-fixed-variant": "#7201a2",
+              "inverse-on-surface": "#f1f1f1",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#ffdada",
+              "primary-fixed-dim": "#ffb3b5",
+              "primary-container": "#e51245",
+              "inverse-surface": "#2f3131",
+              "on-secondary-fixed": "#0c006a",
+              "surface": "#f9f9f9",
+              "outline-variant": "#e6bcbd",
+              "tertiary-fixed": "#f6d9ff",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#a649d5",
+              "on-background": "#1a1c1c",
+              "on-primary-container": "#fffbff",
+              "background": "#f9f9f9",
+              "tertiary-fixed-dim": "#e8b3ff",
+              "on-primary-fixed-variant": "#920027",
+              "on-primary": "#ffffff",
+              "secondary-container": "#6664e4",
+              "on-secondary-fixed-variant": "#3631b4",
+              "surface-container-low": "#f4f3f3",
+              "secondary": "#4c4aca",
+              "tertiary": "#8a2bb9",
+              "on-tertiary-container": "#fffbff",
+              "inverse-primary": "#ffb3b5"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      .glass-effect { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close up headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUJB0vJO0gHBqnckp8Ql8crHVwDw6DtKqUxwuSQkrrXa0yN8dvbMAx-7Vx4HFJ5444f9hYPHmahHLUvq0bAfj6eAyZb7pfNCDtkpQJzWwuRI4cPHJoKj1Lq4VVuHAx-JrbDTtAs35QqPBE4wQ8UYJ2CBuWrSmyvJfd6otuGECdW2MNOPMuQtJGkDdY0SPqU8bm3tpWl1FFx6gndFdLUEoTo4QTyjsOGQEvwd4PR_zHn5BrIy5eMru_ipPiZ84Vcr9rG_ghAWmdsrUg"/>
+</div>
+<h1 class="font-['Inter'] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 text-xl">Equalizer</h1>
+</div>
+<button class="text-rose-600 dark:text-rose-500 hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+</button>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-12">
+<!-- Section: IEM & Sound Profiles -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-[10px] font-medium tracking-widest text-on-surface-variant uppercase mb-1 block">Hardware Configuration</span>
+<h2 class="text-3xl font-bold tracking-tight">IEM Profile</h2>
+</div>
+<button class="px-6 py-2.5 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full text-sm font-semibold shadow-sm active:scale-95 transition-transform">
+                    Change Device
+                </button>
+</div>
+<!-- IEM Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-start group transition-all">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-lg overflow-hidden bg-surface-container-low flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High end metallic in-ear monitors with braided cable" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY7ET4tEdbofr7qxMJX7qmq-y5hktlt8eJaoO4DucEECpuvnHTZU0XEZcZ-wmYZ2EogncUCuXigPG8nO2UoE1nPlFerCxFySjJSIMn4Jpv4Tq3FSOMP-8aojFFts8-8OyeO4nryY5PlS7_F4jAyt70cTrORN5kJcbooWxRnv8a9Km2cHRlJkjef8yX8UX9HusO7SlzlhuJuzAR5ciZfobdKs-Wqc4-qUl7-wbKqAdTAgXprILn5CuiQDoJl_BwpcyvUVOqT92kfHzq"/>
+</div>
+<div class="flex-grow space-y-4 text-center md:text-left">
+<div>
+<h3 class="text-xl font-bold">Monarch MKIII</h3>
+<p class="text-on-surface-variant text-sm">Tribrid Electrolytic Configuration</p>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Impedance</p>
+<p class="font-bold">20Ω <span class="text-xs font-normal text-on-surface-variant">@ 1kHz</span></p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Sensitivity</p>
+<p class="font-bold">99dB <span class="text-xs font-normal text-on-surface-variant">/ mW</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: ML Insights Entry -->
+<section class="space-y-6">
+<div>
+<span class="text-[10px] font-medium tracking-widest text-on-surface-variant uppercase mb-1 block">Advanced Processing</span>
+<h2 class="text-3xl font-bold tracking-tight">Acoustic Intelligence</h2>
+</div>
+<!-- ML Insights Trigger Card (Simulated Click State) -->
+<div class="relative overflow-hidden rounded-xl bg-inverse-surface text-inverse-on-surface p-8 group cursor-pointer hover:ring-2 ring-primary/40 transition-all">
+<div class="absolute top-0 right-0 p-6 opacity-20">
+<span class="material-symbols-outlined text-6xl">neurology</span>
+</div>
+<div class="relative z-10 space-y-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<div>
+<h3 class="text-xl font-bold">ML Insights</h3>
+<p class="text-zinc-400 text-sm">Neural Audio Calibration Engine</p>
+</div>
+</div>
+<!-- Immersive ML View (The Reference Content) -->
+<div class="mt-8 bg-zinc-900/50 rounded-lg p-6 border border-zinc-800 space-y-8">
+<!-- Top Stats Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="space-y-1">
+<p class="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">ML Weight</p>
+<p class="text-2xl font-bold text-primary-fixed-dim">0.842</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Confidence</p>
+<p class="text-2xl font-bold text-white">96.4%</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Model Iter.</p>
+<p class="text-2xl font-bold text-white">v4.2.b</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase text-zinc-500 font-bold tracking-tighter">Latency</p>
+<p class="text-2xl font-bold text-white">12ms</p>
+</div>
+</div>
+<!-- Rating Distribution / Genre Feedback Asymmetric Layout -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+<div class="md:col-span-3 space-y-4">
+<h4 class="text-sm font-bold text-zinc-300">Rating Distribution</h4>
+<div class="flex items-end gap-2 h-32 pt-4">
+<div class="flex-1 bg-zinc-800 rounded-t-sm h-[20%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-zinc-800 rounded-t-sm h-[45%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary rounded-t-sm h-[90%] transition-all"></div>
+<div class="flex-1 bg-zinc-800 rounded-t-sm h-[60%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-zinc-800 rounded-t-sm h-[30%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-zinc-800 rounded-t-sm h-[15%] transition-all hover:bg-primary/40"></div>
+</div>
+<div class="flex justify-between text-[10px] text-zinc-600 font-mono">
+<span>20HZ</span><span>250HZ</span><span>1KHZ</span><span>4KHZ</span><span>8KHZ</span><span>20KHZ</span>
+</div>
+</div>
+<div class="md:col-span-2 space-y-4">
+<h4 class="text-sm font-bold text-zinc-300">Genre Synergy</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-xs text-zinc-400">Electronic</span>
+<span class="text-xs font-bold text-primary">High</span>
+</div>
+<div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[92%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-zinc-400">Classical</span>
+<span class="text-xs font-bold text-zinc-300">Optimal</span>
+</div>
+<div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-zinc-500 h-full w-[78%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-zinc-400">Jazz / Vocal</span>
+<span class="text-xs font-bold text-zinc-300">Optimal</span>
+</div>
+<div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-zinc-500 h-full w-[84%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Details -->
+<div class="pt-6 border-t border-zinc-800/50 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-500 text-sm">terminal</span>
+<span class="text-[10px] font-mono text-zinc-500">KERNEL_ID: SONIC_882_X</span>
+</div>
+<button class="text-xs font-bold text-primary flex items-center gap-1 group/btn">
+                                EXPORT DATA <span class="material-symbols-outlined text-sm transition-transform group-hover/btn:translate-x-1">arrow_right_alt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- General Settings List -->
+<section class="space-y-4">
+<h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant pt-8">Preferences</h3>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">equalizer</span>
+<span class="font-medium">Parametric EQ Settings</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">hd</span>
+<span class="font-medium">Lossless Audio Output</span>
+</div>
+<div class="w-10 h-6 bg-primary rounded-full relative p-1">
+<div class="w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-5 bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">notifications_active</span>
+<span class="font-medium">Profile Switcher Notifications</span>
+</div>
+<div class="w-10 h-6 bg-surface-container-highest rounded-full relative p-1">
+<div class="w-4 h-4 bg-white rounded-full shadow-sm"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-100/50 dark:border-zinc-800/50 z-50">
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">library_music</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Library</span>
+</a>
+<!-- Active Tab: Profile/Settings -->
+<a class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Profile</span>
+</a>
+</nav>
+</body></html>

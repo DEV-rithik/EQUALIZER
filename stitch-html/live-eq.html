@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Equalizer - Live EQ Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#e2e2e2",
+              "outline": "#916e6f",
+              "on-primary-fixed": "#40000c",
+              "on-secondary-fixed-variant": "#3631b4",
+              "surface-bright": "#f9f9f9",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "inverse-primary": "#ffb3b5",
+              "outline-variant": "#e6bcbd",
+              "secondary": "#4c4aca",
+              "surface": "#f9f9f9",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-fixed": "#310048",
+              "primary": "#ba0034",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed": "#ffdada",
+              "surface-container-high": "#e8e8e8",
+              "background": "#f9f9f9",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#e2e2e2",
+              "primary-container": "#e51245",
+              "on-primary-fixed-variant": "#920027",
+              "on-secondary-fixed": "#0c006a",
+              "on-surface-variant": "#5d3f40",
+              "secondary-fixed": "#e2dfff",
+              "surface-dim": "#dadada",
+              "tertiary-container": "#a649d5",
+              "on-secondary": "#ffffff",
+              "on-surface": "#1a1c1c",
+              "surface-container": "#eeeeee",
+              "on-tertiary-container": "#fffbff",
+              "surface-tint": "#be0036",
+              "inverse-surface": "#2f3131",
+              "inverse-on-surface": "#f1f1f1",
+              "tertiary": "#8a2bb9",
+              "on-primary-container": "#fffbff",
+              "surface-container-low": "#f4f3f3",
+              "tertiary-fixed-dim": "#e8b3ff",
+              "secondary-container": "#6664e4",
+              "tertiary-fixed": "#f6d9ff",
+              "on-error": "#ffffff",
+              "on-secondary-container": "#fffbff",
+              "on-background": "#1a1c1c",
+              "secondary-fixed-dim": "#c2c1ff",
+              "on-tertiary-fixed-variant": "#7201a2",
+              "on-primary": "#ffffff",
+              "primary-fixed-dim": "#ffb3b5"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .eq-slider {
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            cursor: pointer;
+            writing-mode: bt-lr; /* Vertical orientation attempt */
+        }
+        /* Vertical Slider Customization */
+        .vertical-range {
+            appearance: none;
+            width: 180px;
+            height: 4px;
+            background: #e2e2e2;
+            transform: rotate(-90deg);
+            outline: none;
+            border-radius: 9999px;
+        }
+        .vertical-range::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #ba0034;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(186, 0, 52, 0.2);
+            cursor: pointer;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body antialiased">
+<!-- TopAppBar -->
+<header class="bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAwuIGRwtK6t7ShND-a5KvxjgPXBuo9oxdc6m1cvVm1k7-0R-Tx-KGLHzozkwfGH0lluIuTCWLAYTOB8sxBq7QPH0_8HiQhYXYeU3EB62wiiErboTSNHlyZZKAKoghR9yoU6JUAKk7ZQaLlDM1ocJ9mJfghcn_-WEq8zgI33P98PR4J_YfdZGwFRLs1tWJMK-6nfDsNgP9OD4JldwLoOjc-ij8b3L1y8VfJop4Nhvh7mbL4yze3_MJOTkIKcjgWvzMwQwu_L4Zqf9b"/>
+</div>
+<h1 class="font-['Inter'] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 text-xl">Equalizer</h1>
+</div>
+<button class="text-zinc-400 dark:text-zinc-500 hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto min-h-screen">
+<!-- Hero Section: Currently Playing -->
+<section class="mb-12 flex flex-col md:flex-row items-center gap-8">
+<div class="relative w-48 h-48 md:w-64 md:h-64 rounded-xl overflow-hidden shadow-2xl shrink-0">
+<img class="w-full h-full object-cover" data-alt="Vibrant abstract music album cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvOOKG6G_6Urjtzjmonie4OD_g2jTld7SFDtc2QMlpDLQvXoWLkbQ7RDudUT8tcMpeny16h1-za7QNlWSAZhiXka9UYAQO1Yl5zdEQCOGlK8vgQloW_Ekjj6bDaCHQgDQ2Aquw6y1awWoopEVUlinGa9_C8QRKP1NBZidM-aJUM_zOXniHKx--SXX9dlsAQvagP-mUme5NowbTit4o5UQhNqj1Gucd2bJC7bxTFALCa_J0kIXDPDY88xqntpUT1ZqJoUseVEniuLVG"/>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<div class="text-center md:text-left">
+<span class="label-md text-primary font-bold tracking-widest uppercase text-xs mb-2 block">Now Tuning</span>
+<h2 class="text-4xl md:text-5xl font-bold tracking-tighter text-on-surface mb-2">Midnight City</h2>
+<p class="text-on-surface-variant text-lg font-medium">M83 — Hurry Up, We're Dreaming</p>
+<div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
+<button class="px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-full font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="save">save</span>
+                        Save Preset
+                    </button>
+<button class="px-6 py-3 bg-surface-container-lowest text-on-surface rounded-full font-semibold border border-outline-variant/15 active:scale-95 transition-transform">
+                        Reset EQ
+                    </button>
+</div>
+</div>
+</section>
+<!-- EQ Visualizer & Sliders Grid -->
+<section class="bg-surface-container-low rounded-xl p-8 mb-8 relative overflow-hidden">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h3 class="text-2xl font-bold tracking-tight">Live Spectrum</h3>
+<p class="text-on-surface-variant">10-Band Precision Control</p>
+</div>
+<div class="flex gap-2">
+<div class="w-2 h-4 bg-primary/20 rounded-full"></div>
+<div class="w-2 h-8 bg-primary/40 rounded-full"></div>
+<div class="w-2 h-12 bg-primary/60 rounded-full"></div>
+<div class="w-2 h-10 bg-primary/80 rounded-full"></div>
+<div class="w-2 h-14 bg-primary rounded-full"></div>
+</div>
+</div>
+<!-- Vertical Sliders Container -->
+<div class="flex justify-between items-center h-[300px] overflow-x-auto hide-scrollbar gap-2 md:gap-0">
+<!-- Band 1 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="4"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">32</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 2 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="2"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">64</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 3 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="-2"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">125</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 4 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="0"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">250</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 5 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="6"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">500</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 6 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="8"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">1k</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 7 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="3"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">2k</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 8 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="-4"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">4k</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 9 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="1"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">8k</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+<!-- Band 10 -->
+<div class="flex flex-col items-center gap-24 h-full min-w-[60px]">
+<span class="text-[10px] font-bold text-on-surface-variant">+12dB</span>
+<div class="relative h-full flex items-center justify-center">
+<input class="vertical-range" max="12" min="-12" type="range" value="5"/>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xs font-bold text-on-surface">16k</span>
+<span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Hz</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Feedback & Smart Features -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feedback Section -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/15 flex flex-col justify-between">
+<div>
+<h4 class="text-xl font-bold mb-2">Smart Feedback</h4>
+<p class="text-on-surface-variant mb-6">Our ML model is optimizing the sound for your current environment. Does this sound better than the original?</p>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 py-4 bg-surface-container-high rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="thumb_up" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+                        Much Better
+                    </button>
+<button class="flex-1 py-4 bg-surface-container-high rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-on-surface/5 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="thumb_down">thumb_down</span>
+                        Not Quite
+                    </button>
+</div>
+</div>
+<!-- Stats/Small Info Card -->
+<div class="bg-primary text-white rounded-xl p-8 flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<span class="text-[10px] uppercase font-bold tracking-[0.2em] opacity-80">AI Analysis</span>
+<h4 class="text-3xl font-bold mt-2">84%</h4>
+<p class="text-sm opacity-90 mt-1">Clarity Match for Electronic Genre</p>
+</div>
+<div class="relative z-10 mt-8">
+<div class="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-white"></div>
+</div>
+</div>
+<!-- Abstract Pattern Background -->
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-primary-container rounded-full blur-3xl opacity-50"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-100/50 dark:border-zinc-800/50 z-50">
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 tap-highlight-transparent active:scale-90 transition-transform hover:text-zinc-900 dark:hover:text-zinc-100" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-rose-600 dark:text-rose-500 tap-highlight-transparent active:scale-90 transition-transform hover:text-zinc-900 dark:hover:text-zinc-100" href="#">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 tap-highlight-transparent active:scale-90 transition-transform hover:text-zinc-900 dark:hover:text-zinc-100" href="#">
+<span class="material-symbols-outlined" data-icon="library_music">library_music</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Library</span>
+</a>
+</nav>
+</body></html>

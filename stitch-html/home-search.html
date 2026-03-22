@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#e8e8e8",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#1a1c1c",
+              "on-tertiary-fixed": "#310048",
+              "surface-tint": "#be0036",
+              "on-error": "#ffffff",
+              "outline": "#916e6f",
+              "surface-variant": "#e2e2e2",
+              "surface-container": "#eeeeee",
+              "on-primary-fixed": "#40000c",
+              "on-secondary-container": "#fffbff",
+              "secondary-fixed-dim": "#c2c1ff",
+              "secondary-fixed": "#e2dfff",
+              "surface-bright": "#f9f9f9",
+              "on-surface-variant": "#5d3f40",
+              "error": "#ba1a1a",
+              "surface-dim": "#dadada",
+              "surface-container-highest": "#e2e2e2",
+              "primary": "#ba0034",
+              "on-tertiary-fixed-variant": "#7201a2",
+              "inverse-on-surface": "#f1f1f1",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#ffdada",
+              "primary-fixed-dim": "#ffb3b5",
+              "primary-container": "#e51245",
+              "inverse-surface": "#2f3131",
+              "on-secondary-fixed": "#0c006a",
+              "surface": "#f9f9f9",
+              "outline-variant": "#e6bcbd",
+              "tertiary-fixed": "#f6d9ff",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#a649d5",
+              "on-background": "#1a1c1c",
+              "on-primary-container": "#fffbff",
+              "background": "#f9f9f9",
+              "tertiary-fixed-dim": "#e8b3ff",
+              "on-primary-fixed-variant": "#920027",
+              "on-primary": "#ffffff",
+              "secondary-container": "#6664e4",
+              "on-secondary-fixed-variant": "#3631b4",
+              "surface-container-low": "#f4f3f3",
+              "secondary": "#4c4aca",
+              "tertiary": "#8a2bb9",
+              "on-tertiary-container": "#fffbff",
+              "inverse-primary": "#ffb3b5"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .text-shadow-subtle {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 glass-header bg-white/80 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="User profile photo in a circular frame" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4NBnRweeuZzEgIauP3rSs3hDxkCH7HW4yhAisq57jnjLD7QDMyHW-MChGoQUwS0bCMlGM3UzZYTPINDDA2bPCGVWjqVovU2OipGpHWzU53Z7aDm3SesJb1XGdbRvP-7iYbxbj9UBFOSQv_fbu_jrKc8chBnoP96AejKLm0dpRO00rrCw_SyIps14WXPgPAa1sUcswGHaaXX3xYHNaDOni9AjrXwOT3Pt73CT8XuE-XVp1lK_fO51Nrgy51f3WATUy4_jQ1hGJeicj"/>
+</div>
+<h1 class="font-headline font-bold tracking-tight text-zinc-900 text-xl">Equalizer</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-rose-600 text-2xl" data-icon="settings">settings</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-12">
+<!-- Search & Quick Access Section -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-3xl font-bold tracking-tight">Home</h2>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="library_music">library_music</span>
+<span class="text-sm font-medium">Saved Presets</span>
+</button>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+</div>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-14 pr-6 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/60" placeholder="Search models or presets..." type="text"/>
+</div>
+</section>
+<!-- Featured IEM Model Card (Editorial Style) -->
+<section class="space-y-4">
+<div class="flex items-end justify-between">
+<span class="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Now Connected</span>
+</div>
+<div class="relative aspect-[4/5] rounded-xl overflow-hidden shadow-2xl group cursor-pointer bg-zinc-900">
+<!-- Background Image with Tonal Overlay -->
+<img alt="Premium IEMs" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="High-end metallic in-ear monitors on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyqkgahDDgn4B1A6TLa_m_izWxY7NOD1DNhdS7z5_Q8Q0IMoRgO7kfdnhF2EXSIP3C-xbry-CGOEXC2CRWnJToZomaOTZYWA20_V11jbNxf__6wFiDgLBNTQyX6KFP1ksNPq9p7cEpoMULuUIyVdFe-FxLP7jMQB_JNamD9Q3LCyg8n9tV4qe1l_tYtaxPyjUmtOo-OvtMGdf7egLKPBk0ol0YBzfRsAHpOmgjT3tOBT-1yRe12UBlm-v_18ANK2jtxygoWUb8ou0x"/>
+<div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent"></div>
+<!-- Card Content -->
+<div class="absolute bottom-0 left-0 w-full p-8 space-y-4">
+<div class="space-y-1">
+<p class="text-surface-container-highest/70 font-medium text-sm">Signature Series</p>
+<h3 class="text-white text-4xl font-extrabold tracking-tighter">Monarch MKIII</h3>
+</div>
+<div class="flex items-center gap-6 py-2">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Driver</span>
+<span class="text-zinc-100 font-medium">Tribrid</span>
+</div>
+<div class="w-px h-8 bg-zinc-800"></div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">State</span>
+<span class="text-rose-500 font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+                                Active
+                            </span>
+</div>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
+                        Adjust EQ Profile
+                    </button>
+</div>
+</div>
+</section>
+<!-- Contextual Quick Stats (Bento Style) -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 rounded-lg space-y-2">
+<span class="material-symbols-outlined text-primary" data-icon="graphic_eq">graphic_eq</span>
+<p class="text-sm font-semibold text-on-surface">Bass Boost</p>
+<p class="text-2xl font-bold">+4.5dB</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg space-y-2">
+<span class="material-symbols-outlined text-primary" data-icon="hearing">hearing</span>
+<p class="text-sm font-semibold text-on-surface">Safe Volume</p>
+<p class="text-2xl font-bold">72%</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full glass-header bg-white/80 flex justify-around items-center pt-3 pb-6 px-4 border-t border-zinc-100/50 z-50">
+<button class="flex flex-col items-center justify-center text-rose-600 active:scale-90 transition-transform tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 hover:text-zinc-900 active:scale-90 transition-transform tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 hover:text-zinc-900 active:scale-90 transition-transform tap-highlight-transparent">
+<span class="material-symbols-outlined" data-icon="library_music">library_music</span>
+<span class="text-[10px] font-medium tracking-wide Inter">Library</span>
+</button>
+</nav>
+</body></html>
